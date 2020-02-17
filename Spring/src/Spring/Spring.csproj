@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <RootNamespace>JetBrains.ReSharper.Plugins.Spring</RootNamespace>
+    <AssemblyName>JetBrains.ReSharper.Plugins.Spring</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Rider.SDK" Version="$(RiderSDKVersion)" />
+    <PackageReference Include="System.ValueTuple" Version="$(ValueTupleVersion)" />
+  </ItemGroup>
+</Project>
