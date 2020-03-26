@@ -62,7 +62,7 @@ intellij {
         localPath = dir.absolutePath
     } else {
         logger.lifecycle("*** Using Rider SDK from intellij-snapshots repository")
-        version = "$baseVersion-SNAPSHOT"
+        version = "$baseVersion"
     }
 
     instrumentCode = false
