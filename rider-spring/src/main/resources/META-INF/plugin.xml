@@ -16,6 +16,7 @@
     <lang.altEnter language="Spring" implementationClass="com.jetbrains.rider.intentions.altEnter.ReSharperBulbMenuModelFactory" />
     <lang.syntaxHighlighterFactory language="Spring" implementationClass="com.jetbrains.rider.ideaInterop.fileTypes.spring.SpringHighlighterProvider"/>
     <backend.markup.adapterFactory language="Spring" implementationClass="com.jetbrains.rdclient.daemon.FrontendMarkupAdapterFactory" />
+    <backend.actions.support language="Spring" implementationClass="com.jetbrains.rider.actions.RiderActionSupportPolicy" />
   </extensions>
 
   <actions>
