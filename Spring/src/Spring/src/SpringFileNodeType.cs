@@ -29,6 +29,8 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringCompositeNodeType NUMBER = new SpringCompositeNodeType("Spring_NUMBER", 5);
         public static readonly SpringCompositeNodeType VARIABLE = new SpringCompositeNodeType("Spring_VARIABLE", 6);
         public static readonly SpringCompositeNodeType STRING = new SpringCompositeNodeType("Spring_STRING", 7);
+        public static readonly SpringCompositeNodeType FOR = new SpringCompositeNodeType("Spring_FOR", 8);
+        public static readonly SpringCompositeNodeType LOGIC_BINOP = new SpringCompositeNodeType("Spring_LOGIC_BINOP", 9);
 
         public override CompositeElement Create()
         {
@@ -48,6 +50,10 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 return new SpringVariable();
             if (this == STRING)
                 return new SpringString();
+            if (this == FOR)
+                return new SpringFor();
+            if (this == LOGIC_BINOP)
+                return new SpringLogicBinop();
             throw new InvalidOperationException();
         }
     }

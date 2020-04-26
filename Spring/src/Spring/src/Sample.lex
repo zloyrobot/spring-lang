@@ -40,13 +40,18 @@ STRING_TEXT="\""(.)*"\""
 
 %% 
 <YYINITIAL> {WHITE_SPACE_CHAR}* { return currentTokenType = SpringTokenType.WHITE_SPACE; }
+<YYINITIAL> for { return currentTokenType = SpringTokenType.FOR; }
 <YYINITIAL> ":=" { return currentTokenType = SpringTokenType.ASSIGN; }
+<YYINITIAL> ["><="] { return currentTokenType = SpringTokenType.LOGIC_BINOP; }
 <YYINITIAL> ["+-"] { return currentTokenType = SpringTokenType.LOW_BINOP; }
 <YYINITIAL> ["*/"] { return currentTokenType = SpringTokenType.MEDIUM_BINOP; }
 <YYINITIAL> "^" { return currentTokenType = SpringTokenType.HIGH_BINOP; }
 <YYINITIAL> {ALPHA}+ { return currentTokenType = SpringTokenType.IDENT; }
 <YYINITIAL> "(" { return currentTokenType = SpringTokenType.LBRACKET; }
 <YYINITIAL> ")" { return currentTokenType = SpringTokenType.RBRACKET; }
+<YYINITIAL> "{" { return currentTokenType = SpringTokenType.LFBRACKET; }
+<YYINITIAL> "}" { return currentTokenType = SpringTokenType.RFBRACKET; }
+<YYINITIAL> for { return currentTokenType = SpringTokenType.FOR; }
 <YYINITIAL> ";" { return currentTokenType = SpringTokenType.SEQ; }
 <YYINITIAL> {DIGIT}+ { return currentTokenType = SpringTokenType.NUMBER; }	
 <YYINITIAL> {STRING_TEXT} { return currentTokenType = SpringTokenType.STRING; }	

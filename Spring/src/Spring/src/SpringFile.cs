@@ -66,4 +66,18 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override PsiLanguageType Language => SpringLanguage.Instance;
     }
     
+    public class SpringLogicBinop : CompositeElement
+    {
+        public override NodeType NodeType => SpringCompositeNodeType.LOGIC_BINOP;
+
+        public override PsiLanguageType Language => SpringLanguage.Instance;
+    }
+    
+    public class SpringFor : CompositeElement
+    {
+        public override NodeType NodeType => SpringCompositeNodeType.FOR;
+
+        public override PsiLanguageType Language => SpringLanguage.Instance;
+    }
+    
 }

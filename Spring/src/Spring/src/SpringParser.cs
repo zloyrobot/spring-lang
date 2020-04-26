@@ -21,6 +21,7 @@ using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.TreeBuilder;
 using JetBrains.Text;
+using Mono.CSharp;
 
 namespace JetBrains.ReSharper.Plugins.Spring
 {
@@ -54,27 +55,20 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
             var start = builder.Mark();
 
-            if (!ParseAssign(builder))
+            if (!ParseStmt(builder))
             {
                 builder.Drop(start);
-                return false;
-            }
-
-            if (builder.GetTokenType() != SpringTokenType.SEQ)
-            {
-                builder.Drop(start);
-                builder.Error("Missing ';'");
                 return false;
             }
             
             AdvanceWithSpaces(builder);
-
-            if (builder.Eof())
+            
+            if (builder.Eof() || builder.GetTokenType() == SpringTokenType.RFBRACKET)
             {
                 builder.Drop(start);
                 return true;
             }
-            
+
             if (!ParseSeq(builder))
             {
                 builder.Drop(start);
@@ -82,6 +76,95 @@ namespace JetBrains.ReSharper.Plugins.Spring
             }
             
             builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.SEQ, null);
+            return true;
+        }
+
+        private bool ParseStmt(PsiBuilder builder)
+        {
+            var start = builder.Mark();
+
+            if (builder.GetTokenType() == SpringTokenType.FOR)
+            {
+                AdvanceWithSpaces(builder);
+                if (builder.GetTokenType() != SpringTokenType.LBRACKET)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing '('");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                if (!ParseAssign(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                if (builder.GetTokenType() != SpringTokenType.SEQ)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing ';'");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                if (!ParseLogic(builder)) 
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                if (builder.GetTokenType() != SpringTokenType.SEQ)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing ';'");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                if (!ParseAssign(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                if (builder.GetTokenType() != SpringTokenType.RBRACKET)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing ')'");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                if (builder.GetTokenType() != SpringTokenType.LFBRACKET)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing '{'");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                if (!ParseSeq(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                if (builder.GetTokenType() != SpringTokenType.RFBRACKET)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing '}'");
+                    return false;
+                }
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.FOR, null);
+                return true;
+            }
+
+            if (!ParseAssign(builder))
+            {
+                builder.Drop(start);
+                return false;
+            }
+            
+            if (builder.GetTokenType() != SpringTokenType.SEQ)
+            {
+                builder.Drop(start);
+                builder.Error("Missing ';'");
+                return false;
+            }
+
+            builder.Drop(start);
             return true;
         }
 
@@ -107,16 +190,42 @@ namespace JetBrains.ReSharper.Plugins.Spring
             
             AdvanceWithSpaces(builder);
 
+            if (!ParseLogic(builder))
+            {
+                builder.Drop(start);
+                return false;
+            }
+
+            builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.ASSIGN, null);
+            return true;
+        }
+
+        private bool ParseLogic(PsiBuilder builder)
+        {
+            var start = builder.Mark();
+
             if (!ParseLow(builder))
             {
                 builder.Drop(start);
                 return false;
             }
             
-            builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.LOW_BINOP, null);
+            while (builder.GetTokenType() == SpringTokenType.LOGIC_BINOP)
+            {
+                AdvanceWithSpaces(builder);
+                if (!ParseLow(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.LOGIC_BINOP, null);
+                builder.Precede(start);
+            }
+
+            builder.Drop(start);
             return true;
         }
-
         private bool ParseLow(PsiBuilder builder)
         {
             var start = builder.Mark();
@@ -223,7 +332,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             if (builder.GetTokenType() == SpringTokenType.LBRACKET)
             {
                 AdvanceWithSpaces(builder);
-                if (!ParseLow(builder))
+                if (!ParseLogic(builder))
                 {
                     builder.RollbackTo(start);
                     return false;

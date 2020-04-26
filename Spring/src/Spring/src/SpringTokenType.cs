@@ -23,6 +23,10 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static SpringTokenType NUMBER = new SpringTokenType("NUMBER", 9);
         public static SpringTokenType STRING = new SpringTokenType("STRING", 10);
         public static SpringTokenType BAD_CHARACTER = new SpringTokenType("BAD_CHARACTER", 11);
+        public static SpringTokenType LFBRACKET = new SpringTokenType("LFBRACKET", 12);
+        public static SpringTokenType RFBRACKET = new SpringTokenType("RFBRACKET", 13);
+        public static SpringTokenType LOGIC_BINOP = new SpringTokenType("LOGIC_BINOP", 14);
+        public static SpringTokenType FOR = new SpringTokenType("FOR", 15);
 
         public SpringTokenType(string s, int index) : base(s, index)
         {
@@ -42,7 +46,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override bool IsConstantLiteral => this == NUMBER;
         
         public override bool IsIdentifier => this == IDENT;
-        public override bool IsKeyword => false;
+        public override bool IsKeyword => this == FOR;
         public override string TokenRepresentation { get; }
     }
 }
