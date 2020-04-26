@@ -1,0 +1,6 @@
+begin
+    procedure f();
+      value x;
+      goto 0;
+    goto 1;
+end

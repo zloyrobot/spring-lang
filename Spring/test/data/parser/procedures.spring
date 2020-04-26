@@ -1,0 +1,19 @@
+start:
+begin
+    procedure x;
+        x := 10;
+    procedure f(a);
+        value val;
+        boolean array a;
+        begin
+            print(a[12])
+        end;
+    procedure fuN(a,b,   c);
+        real a;
+        integer b;
+        string c;
+        goto start;
+    begin
+        body
+    end
+end

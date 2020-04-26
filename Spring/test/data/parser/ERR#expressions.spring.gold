@@ -1,0 +1,57 @@
+Language: PsiLanguageType:Spring
+SpringFile
+  SpringBlock
+    SpringTokenType+SpringGenericToken(type:BEGIN_KEYWORD, text:begin)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n )
+    SpringBlockStatPart
+      SpringAssignStat
+        SpringVar
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringCondExpr
+          SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          ErrorElement:A boolean expression expected
+          ErrorElement:'then' keyword expected
+          SpringBinOp
+            SpringNumConst
+              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:2)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringNumConst
+              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:3)
+          ErrorElement:'else' keyword expected
+          ErrorElement:An expression expected after 'else'
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n )
+      SpringAssignStat
+        SpringVar
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:z)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringBinOp
+          SpringBinOp
+            SpringNumConst
+              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringFuncApp
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:f)
+              SpringActualParamList
+                SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+                ErrorElement:An actual parameter expected
+                SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringNumConst
+            SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:3)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+    ErrorElement:'end' expected
+  ErrorElement:Semantical tokens after the program end!
+

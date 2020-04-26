@@ -1,0 +1,8 @@
+begin
+    fun0;
+    fun1(x);
+    fun2(2,3);
+ 5:
+    goto 5;
+    x := 1 + 23
+end

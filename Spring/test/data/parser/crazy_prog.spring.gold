@@ -1,0 +1,580 @@
+Language: PsiLanguageType:Spring
+SpringFile
+  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+  SpringBlock
+    SpringLabelSeq
+      SpringLabel
+        SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:start)
+      SpringTokenType+SpringGenericToken(type:COLON, text::)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+    SpringTokenType+SpringGenericToken(type:BEGIN_KEYWORD, text:begin)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: \n  \n  )
+    SpringBlockDeclPart
+      SpringTypeDecl
+        SpringTokenType+SpringGenericToken(type:TYPE, text:real)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringIdentList
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  \n  )
+      SpringTokenType+SpringGenericToken(type:COMMENT_SECTION, text:comment hil;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  \n  )
+      SpringProcDecl
+        SpringTokenType+SpringGenericToken(type:PROCEDURE_KEYWORD, text:procedure)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:foo)
+        SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: \n     )
+        SpringProcValuePart
+          SpringTokenType+SpringGenericToken(type:VALUE_KEYWORD, text:value)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringIdentList
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:u)
+            SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:ui)
+          SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n     )
+        SpringProcSpecList
+          SpringSpecification
+            SpringTokenType+SpringGenericToken(type:STRING_KEYWORD, text:string)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringIdentList
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:s)
+          SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n     )
+          SpringSpecification
+            SpringTokenType+SpringGenericToken(type:STRING_KEYWORD, text:string)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringIdentList
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:s)
+              SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:uy)
+          SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n     )
+          SpringSpecification
+            SpringTokenType+SpringGenericToken(type:TYPE, text:boolean)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:PROCEDURE_KEYWORD, text:procedure)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringIdentList
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:er)
+          SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n     )
+        SpringAssignStat
+          SpringVar
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringNumConst
+            SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: \n     \n  )
+      SpringProcDecl
+        SpringTokenType+SpringGenericToken(type:TYPE, text:integer)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:PROCEDURE_KEYWORD, text:procedure)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:bar)
+        SpringFormalParamsList
+          SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+          SpringIdentList
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+            SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:y)
+          SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+        SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringForStat
+          SpringTokenType+SpringGenericToken(type:FOR_KEYWORD, text:for)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringVar
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:i)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringForList
+            SpringForListElem
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:5)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:DO_KEYWORD, text:do)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringAssignStat
+            SpringVar
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:i)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringBinOp
+              SpringVar
+                SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:i)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  \n  )
+      SpringArrayDecl
+        SpringTokenType+SpringGenericToken(type:ARRAY_KEYWORD, text:array)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringArraySegList
+          SpringArraySeg
+            SpringIdentList
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:y)
+              SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:z)
+            SpringBPairList
+              SpringTokenType+SpringGenericToken(type:SQUARE_LBRACE, text:[)
+              SpringBPair
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+                SpringTokenType+SpringGenericToken(type:COLON, text::)
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:2)
+              SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringBPair
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:3)
+                SpringTokenType+SpringGenericToken(type:COLON, text::)
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:4)
+              SpringTokenType+SpringGenericToken(type:SQUARE_RBRACE, text:])
+          SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringArraySeg
+            SpringIdentList
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:f)
+            SpringBPairList
+              SpringTokenType+SpringGenericToken(type:SQUARE_LBRACE, text:[)
+              SpringBPair
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+                SpringTokenType+SpringGenericToken(type:COLON, text::)
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:0)
+              SpringTokenType+SpringGenericToken(type:SQUARE_RBRACE, text:])
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  )
+      SpringSwitchDecl
+        SpringTokenType+SpringGenericToken(type:SWITCH_KEYWORD, text:switch)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:u)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringSwitchList
+          SpringCondExpr
+            SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringFuncApp
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:right)
+              SpringActualParamList
+                SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:0)
+                SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringSubscriptedVar
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:r)
+              SpringSubscriptList
+                SpringTokenType+SpringGenericToken(type:SQUARE_LBRACE, text:[)
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:0)
+                SpringTokenType+SpringGenericToken(type:SQUARE_RBRACE, text:])
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringSubscriptedVar
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:r)
+              SpringSubscriptList
+                SpringTokenType+SpringGenericToken(type:SQUARE_LBRACE, text:[)
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+                SpringTokenType+SpringGenericToken(type:SQUARE_RBRACE, text:])
+          SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringVar
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:lab)
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  )
+      SpringTypeDecl
+        SpringTokenType+SpringGenericToken(type:OWN_KEYWORD, text:own)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:TYPE, text:boolean)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringIdentList
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:y)
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  )
+      SpringTypeDecl
+        SpringTokenType+SpringGenericToken(type:TYPE, text:integer)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringIdentList
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+          SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:z)
+          SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:Hi)
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  \n  )
+    SpringBlockStatPart
+      SpringProcedureStat
+        SpringFuncApp
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:print)
+          SpringActualParamList
+            SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+            SpringTokenType+SpringGenericToken(type:STRING, text:"hi")
+            SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  \n  )
+      SpringAssignStat
+        SpringVar
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringNumConst
+          SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:22)
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  \n  )
+      SpringConditionalStat
+        SpringLabelSeq
+          SpringLabel
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:d)
+          SpringTokenType+SpringGenericToken(type:COLON, text::)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringRelation
+          SpringNumConst
+            SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:3)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:REL_OP, text:=)
+          SpringNumConst
+            SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:4)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringAssignStat
+          SpringLabelSeq
+            SpringLabel
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:a)
+            SpringTokenType+SpringGenericToken(type:COLON, text::)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringVar
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:y)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringBinOp
+            SpringVar
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:y)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringNumConst
+              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringForStat
+          SpringTokenType+SpringGenericToken(type:FOR_KEYWORD, text:for)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringSubscriptedVar
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+            SpringSubscriptList
+              SpringTokenType+SpringGenericToken(type:SQUARE_LBRACE, text:[)
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:11)
+              SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:12)
+              SpringTokenType+SpringGenericToken(type:SQUARE_RBRACE, text:])
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringForList
+            SpringForListElem
+              SpringFuncApp
+                SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+                SpringActualParamList
+                  SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+                  SpringNumConst
+                    SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:11)
+                  SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringNumConst
+                    SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:12)
+                  SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+            SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringForListElem
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:13)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:WHILE_KEYWORD, text:while)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringRelation
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:5)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringTokenType+SpringGenericToken(type:REL_OP, text:=)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:5)
+            SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringForListElem
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:27)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:STEP_KEYWORD, text:step)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:5)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:UNTIL_KEYWORD, text:until)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringCondExpr
+                SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:4)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:4)
+            SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringForListElem
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:3)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:DO_KEYWORD, text:do)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  \n   )
+          SpringAssignStat
+            SpringLabelSeq
+              SpringLabel
+                SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:uf)
+              SpringTokenType+SpringGenericToken(type:COLON, text::)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringLabel
+                SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:ab)
+              SpringTokenType+SpringGenericToken(type:COLON, text::)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringLabel
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:3)
+              SpringTokenType+SpringGenericToken(type:COLON, text::)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringLabel
+                SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:boo)
+              SpringTokenType+SpringGenericToken(type:COLON, text::)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringSubscriptedVar
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+              SpringSubscriptList
+                SpringTokenType+SpringGenericToken(type:SQUARE_LBRACE, text:[)
+                SpringNumConst
+                  SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:3)
+                SpringTokenType+SpringGenericToken(type:SQUARE_RBRACE, text:])
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringCondExpr
+              SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringInnerExpr
+                SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+                SpringCondExpr
+                  SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:false)
+                SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringInnerExpr
+                SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+                SpringCondExpr
+                  SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringBinOp
+                    SpringVar
+                      SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+                    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                    SpringTokenType+SpringGenericToken(type:OR, text:⋁)
+                    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                    SpringBinOp
+                      SpringUnOp
+                        SpringTokenType+SpringGenericToken(type:NEG, text:¬)
+                        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                        SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+                      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                      SpringTokenType+SpringGenericToken(type:AND, text:⋀)
+                      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                      SpringUnOp
+                        SpringTokenType+SpringGenericToken(type:NEG, text:¬)
+                        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                        SpringVar
+                          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:of)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:  )
+                  SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringBinOp
+                    SpringNumConst
+                      SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:4)
+                    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                    SpringTokenType+SpringGenericToken(type:ADD_OP, text:-)
+                    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                    SpringNumConst
+                      SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringBinOp
+                    SpringUnOp
+                      SpringTokenType+SpringGenericToken(type:ADD_OP, text:-)
+                      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                      SpringNumConst
+                        SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:4)
+                    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                    SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+                    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                    SpringBinOp
+                      SpringVar
+                        SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:y)
+                      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                      SpringTokenType+SpringGenericToken(type:MULT_OP, text:×)
+                      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                      SpringNumConst
+                        SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+                SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringCondExpr
+                SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n)
+                SpringTokenType+SpringGenericToken(type:COMMENT_SECTION, text:comment oy;)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:       \n)
+                SpringRelation
+                  SpringNumConst
+                    SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:REL_OP, text:<)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringNumConst
+                    SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:2)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: \n  )
+                SpringBinOp
+                  SpringNumConst
+                    SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:2)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:MULT_OP, text:×)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:   )
+                  SpringFuncApp
+                    SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:superb)
+                    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:  )
+                    SpringActualParamList
+                      SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+                      SpringBinOp
+                        SpringBinOp
+                          SpringVar
+                            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:BOOOOM)
+                          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                          SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+                          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                          SpringBinOp
+                            SpringNumConst
+                              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+                            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:  )
+                            SpringTokenType+SpringGenericToken(type:MULT_OP, text:×)
+                            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                            SpringNumConst
+                              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:3)
+                        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                        SpringTokenType+SpringGenericToken(type:ADD_OP, text:-)
+                        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:  )
+                        SpringNumConst
+                          SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+                      SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+                      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                      SpringTokenType+SpringGenericToken(type:COMMENT_SECTION, text:comment true;)
+                      SpringVar
+                        SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:s)
+                      SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+                      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                      SpringTokenType+SpringGenericToken(type:STRING, text:"hi")
+                      SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:   )
+                SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+                SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                SpringBinOp
+                  SpringBinOp
+                    SpringNumConst
+                      SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:23)
+                    SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+                    SpringBinOp
+                      SpringBinOp
+                        SpringNumConst
+                          SpringTokenType+SpringGenericToken(type:NON_UINT_NUMBER, text:0.0₁₀-12)
+                        SpringTokenType+SpringGenericToken(type:POW_OP, text:↑)
+                        SpringSubscriptedVar
+                          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:kk)
+                          SpringSubscriptList
+                            SpringTokenType+SpringGenericToken(type:SQUARE_LBRACE, text:[)
+                            SpringNumConst
+                              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:23)
+                            SpringTokenType+SpringGenericToken(type:COMMA, text:,)
+                            SpringCondExpr
+                              SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+                              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                              SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+                              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                              SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+                              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                              SpringNumConst
+                                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:2)
+                              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                              SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+                              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                              SpringNumConst
+                                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:4)
+                            SpringTokenType+SpringGenericToken(type:SQUARE_RBRACE, text:])
+                      SpringTokenType+SpringGenericToken(type:MULT_OP, text:/)
+                      SpringNumConst
+                        SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:12)
+                  SpringTokenType+SpringGenericToken(type:ADD_OP, text:+)
+                  SpringNumConst
+                    SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:23)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n  \n    )
+    SpringTokenType+SpringGenericToken(type:END_KEYWORD, text:end)
+  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n)
+

@@ -39,36 +39,18 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 var builder = new PsiBuilder(myLexer, SpringFileNodeType.Instance, new TokenFactory(), def.Lifetime);
                 var fileMark = builder.Mark();
 
-                ParseBlock(builder);
+                // ParseBlock2(builder);
+                var parser = new SpringGrammarParser(builder);
+                parser.ParseAll();
 
                 builder.Done(fileMark, SpringFileNodeType.Instance, null);
                 var file = (IFile)builder.BuildTree();
-                return file;
-            }
-        }
 
-        private void ParseBlock(PsiBuilder builder)
-        {
-            while (!builder.Eof())
-            {
-                var tt = builder.GetTokenType();
-                if (tt == CSharpTokenType.LBRACE)
-                {
-                    var start = builder.Mark();
-                    builder.AdvanceLexer();
-                    ParseBlock(builder);
-
-                    if (builder.GetTokenType() != CSharpTokenType.RBRACE)
-                        builder.Error("Expected '}'");
-                    else
-                        builder.AdvanceLexer();
-                    
-                    builder.Done(start, SpringCompositeNodeType.BLOCK, null);
-                }
-                else if (tt == CSharpTokenType.RBRACE)
-                    return;
-                else builder.AdvanceLexer();
+                var stringBuilder = new StringBuilder();
+                DebugUtil.DumpPsi(new StringWriter(stringBuilder), file);
+                stringBuilder.ToString();
                 
+              return file;
             }
         }
     }

@@ -1,0 +1,16 @@
+begin
+    integer I;
+    real procedure SUM(I, LO, HI, TERM); 
+      value LO, HI;
+      integer I, LO, HI;
+      real TERM;
+    comment  TERM IS PASSED BY-NAME;
+    begin
+        real TEMP;
+        TEMP := 0;
+        for I := LO step 1 until HI do
+          TEMP := TEMP + TERM;
+        SUM := TEMP
+    end;
+    PRINT(SUM(I, 1, 100, 1 ÷ I), 6, 3)
+end comment JENSEN'S DEVICE,  L. ALLISON, COMPUTER SCIENCE, MONASH UNIVERSITY.;

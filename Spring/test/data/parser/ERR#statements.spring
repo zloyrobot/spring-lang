@@ -1,0 +1,4 @@
+begin
+ x := ;
+ if true then for i := 1 do ACT1 else ACT2
+end
