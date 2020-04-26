@@ -151,6 +151,39 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 return true;
             }
 
+            if (builder.GetTokenType() == SpringTokenType.WRITE)
+            {
+                AdvanceWithSpaces(builder);
+                if (builder.GetTokenType() != SpringTokenType.LBRACKET)
+                {
+                    builder.RollbackTo(start);
+                    builder.Error("Missing '('");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                if (!ParseLogic(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                if (builder.GetTokenType() != SpringTokenType.RBRACKET)
+                {
+                    builder.RollbackTo(start);
+                    builder.Error("Missing ')'");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.WRITE, null);
+                
+                if (builder.GetTokenType() != SpringTokenType.SEQ)
+                {
+                    builder.Error("Missing ';'");
+                    return false;
+                }
+                
+                return true;
+            }
+
             if (!ParseAssign(builder))
             {
                 builder.Drop(start);
@@ -308,6 +341,28 @@ namespace JetBrains.ReSharper.Plugins.Spring
         private bool ParseIdent(PsiBuilder builder)
         {
             var start = builder.Mark();
+
+            if (builder.GetTokenType() == SpringTokenType.READ)
+            {
+                AdvanceWithSpaces(builder);
+                if (builder.GetTokenType() != SpringTokenType.LBRACKET)
+                {
+                    builder.RollbackTo(start);
+                    builder.Error("Missing '('");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                if (builder.GetTokenType() != SpringTokenType.RBRACKET)
+                {
+                    builder.RollbackTo(start);
+                    builder.Error("Missing ')'");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.READ, null);
+                return true;
+            }
+            
             if (builder.GetTokenType() == SpringTokenType.NUMBER)
             {
                 AdvanceWithSpaces(builder);
@@ -341,7 +396,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 if (builder.GetTokenType() != SpringTokenType.RBRACKET)
                 {
                     builder.RollbackTo(start);
-                    builder.Error("Expected ')'");
+                    builder.Error("Missing ')'");
                     return false;
                 }
                 AdvanceWithSpaces(builder);

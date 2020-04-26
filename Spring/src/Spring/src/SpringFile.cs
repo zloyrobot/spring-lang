@@ -80,4 +80,18 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override PsiLanguageType Language => SpringLanguage.Instance;
     }
     
+    public class SpringRead : CompositeElement
+    {
+        public override NodeType NodeType => SpringCompositeNodeType.READ;
+
+        public override PsiLanguageType Language => SpringLanguage.Instance;
+    }
+    
+    public class SpringWrite : CompositeElement
+    {
+        public override NodeType NodeType => SpringCompositeNodeType.WRITE;
+
+        public override PsiLanguageType Language => SpringLanguage.Instance;
+    }
+    
 }

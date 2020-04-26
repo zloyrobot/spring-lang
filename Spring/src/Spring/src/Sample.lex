@@ -41,6 +41,8 @@ STRING_TEXT="\""(.)*"\""
 %% 
 <YYINITIAL> {WHITE_SPACE_CHAR}* { return currentTokenType = SpringTokenType.WHITE_SPACE; }
 <YYINITIAL> for { return currentTokenType = SpringTokenType.FOR; }
+<YYINITIAL> read { return currentTokenType = SpringTokenType.READ; }
+<YYINITIAL> write { return currentTokenType = SpringTokenType.WRITE; }
 <YYINITIAL> ":=" { return currentTokenType = SpringTokenType.ASSIGN; }
 <YYINITIAL> ["><="] { return currentTokenType = SpringTokenType.LOGIC_BINOP; }
 <YYINITIAL> ["+-"] { return currentTokenType = SpringTokenType.LOW_BINOP; }

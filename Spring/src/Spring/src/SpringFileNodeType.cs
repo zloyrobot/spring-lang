@@ -31,6 +31,8 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringCompositeNodeType STRING = new SpringCompositeNodeType("Spring_STRING", 7);
         public static readonly SpringCompositeNodeType FOR = new SpringCompositeNodeType("Spring_FOR", 8);
         public static readonly SpringCompositeNodeType LOGIC_BINOP = new SpringCompositeNodeType("Spring_LOGIC_BINOP", 9);
+        public static readonly SpringCompositeNodeType READ = new SpringCompositeNodeType("Spring_FOR", 10);
+        public static readonly SpringCompositeNodeType WRITE = new SpringCompositeNodeType("Spring_LOGIC_BINOP", 11);
 
         public override CompositeElement Create()
         {
@@ -54,6 +56,10 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 return new SpringFor();
             if (this == LOGIC_BINOP)
                 return new SpringLogicBinop();
+            if (this == READ)
+                return new SpringRead();
+            if (this == WRITE)
+                return new SpringWrite();
             throw new InvalidOperationException();
         }
     }
