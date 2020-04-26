@@ -1,31 +1,48 @@
+using System;
+using System.Text;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
+using JetBrains.ReSharper.Psi.JavaScript.Impl.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.Text;
+using JetBrains.Util;
 
 namespace JetBrains.ReSharper.Plugins.Spring
 {
-    class SpringTokenType : TokenNodeType
+    public class SpringTokenType : TokenNodeType
     {
-        public static  SpringTokenType EQ = new SpringTokenType("EQ", 0);
-        public static  SpringTokenType NUMBER = new SpringTokenType("NUMBER", 1);
-        public static SpringTokenType STRING = new SpringTokenType("STRING", 2);
-        public static SpringTokenType BAD_CHARACTER = new SpringTokenType("BAD_CHARACTER", 3);
+        public static SpringTokenType WHITE_SPACE = new SpringTokenType("WHITE_SPACE", 0);
+        public static SpringTokenType ASSIGN = new SpringTokenType("ASSIGN", 1);
+        public static SpringTokenType LOW_BINOP = new SpringTokenType("LOW_BINOP", 2);
+        public static SpringTokenType MEDIUM_BINOP = new SpringTokenType("MEDIUM_BINOP", 3);
+        public static SpringTokenType HIGH_BINOP = new SpringTokenType("HIGH_BINOP", 4);
+        public static SpringTokenType IDENT = new SpringTokenType("IDENT", 5);
+        public static SpringTokenType LBRACKET = new SpringTokenType("LBRACKET", 6);
+        public static SpringTokenType RBRACKET = new SpringTokenType("RBRACKET", 7);
+        public static SpringTokenType SEQ = new SpringTokenType("SEQ", 8);
+        public static SpringTokenType NUMBER = new SpringTokenType("NUMBER", 9);
+        public static SpringTokenType STRING = new SpringTokenType("STRING", 10);
+        public static SpringTokenType BAD_CHARACTER = new SpringTokenType("BAD_CHARACTER", 11);
+
         public SpringTokenType(string s, int index) : base(s, index)
         {
+            TokenRepresentation = s;
         }
 
-        public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
+        public override LeafElementBase Create(IBuffer buffer,
+            TreeOffset startOffset,
+            TreeOffset endOffset)
         {
-            throw new System.NotImplementedException();
+            return new SpringGenericToken(this, buffer.GetText(new TextRange(startOffset.Offset, endOffset.Offset)));
         }
 
-        public override bool IsWhitespace { get; }
-        public override bool IsComment { get; }
-        public override bool IsStringLiteral { get; }
-        public override bool IsConstantLiteral { get; }
-        public override bool IsIdentifier { get; }
-        public override bool IsKeyword { get; }
+        public override bool IsWhitespace => this == WHITE_SPACE;
+        public override bool IsComment => false;
+        public override bool IsStringLiteral => this == STRING;
+        public override bool IsConstantLiteral => this == NUMBER;
+        
+        public override bool IsIdentifier => this == IDENT;
+        public override bool IsKeyword => false;
         public override string TokenRepresentation { get; }
     }
 }

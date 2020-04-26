@@ -10,6 +10,7 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Feature.Services.SelectEmbracingConstruct;
+using JetBrains.ReSharper.Host.Features.ProjectModel.Diagnostic.FrameworkAnalyzers;
 using JetBrains.ReSharper.I18n.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Parsing;
@@ -38,38 +39,216 @@ namespace JetBrains.ReSharper.Plugins.Spring
             {
                 var builder = new PsiBuilder(myLexer, SpringFileNodeType.Instance, new TokenFactory(), def.Lifetime);
                 var fileMark = builder.Mark();
-
-                ParseBlock(builder);
-
+                ParseSeq(builder);
                 builder.Done(fileMark, SpringFileNodeType.Instance, null);
                 var file = (IFile)builder.BuildTree();
+                var stringBuilder = new StringBuilder();
+                DebugUtil.DumpPsi(new StringWriter(stringBuilder), file);
+                stringBuilder.ToString();
                 return file;
             }
         }
-
-        private void ParseBlock(PsiBuilder builder)
+        
+        private bool ParseSeq(PsiBuilder builder)
         {
-            while (!builder.Eof())
-            {
-                var tt = builder.GetTokenType();
-                if (tt == CSharpTokenType.LBRACE)
-                {
-                    var start = builder.Mark();
-                    builder.AdvanceLexer();
-                    ParseBlock(builder);
 
-                    if (builder.GetTokenType() != CSharpTokenType.RBRACE)
-                        builder.Error("Expected '}'");
-                    else
-                        builder.AdvanceLexer();
-                    
-                    builder.Done(start, SpringCompositeNodeType.BLOCK, null);
-                }
-                else if (tt == CSharpTokenType.RBRACE)
-                    return;
-                else builder.AdvanceLexer();
-                
+            var start = builder.Mark();
+
+            if (!ParseAssign(builder))
+            {
+                builder.Drop(start);
+                return false;
             }
+
+            if (builder.GetTokenType() != SpringTokenType.SEQ)
+            {
+                builder.Drop(start);
+                builder.Error("Missing ';'");
+                return false;
+            }
+            
+            AdvanceWithSpaces(builder);
+
+            if (builder.Eof())
+            {
+                builder.Drop(start);
+                return true;
+            }
+            
+            if (!ParseSeq(builder))
+            {
+                builder.Drop(start);
+                return false;
+            }
+            
+            builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.SEQ, null);
+            return true;
+        }
+
+        private bool ParseAssign(PsiBuilder builder)
+        {
+            var start = builder.Mark();
+            
+            if (builder.GetTokenType() != SpringTokenType.IDENT)
+            {
+                builder.Drop(start);
+                builder.Error("Missing variable");
+                return false;
+            }
+
+            AdvanceWithSpaces(builder);
+            
+            if (builder.GetTokenType() != SpringTokenType.ASSIGN)
+            {
+                builder.Drop(start);
+                builder.Error("Missing ':='");
+                return false;
+            }
+            
+            AdvanceWithSpaces(builder);
+
+            if (!ParseLow(builder))
+            {
+                builder.Drop(start);
+                return false;
+            }
+            
+            builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.LOW_BINOP, null);
+            return true;
+        }
+
+        private bool ParseLow(PsiBuilder builder)
+        {
+            var start = builder.Mark();
+
+            if (!ParseMedium(builder))
+            {
+                builder.Drop(start);
+                return false;
+            }
+            
+            while (builder.GetTokenType() == SpringTokenType.LOW_BINOP)
+            {
+                AdvanceWithSpaces(builder);
+                if (!ParseMedium(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.LOW_BINOP, null);
+                builder.Precede(start);
+            }
+
+            builder.Drop(start);
+            return true;
+        }
+        
+        private bool ParseMedium(PsiBuilder builder)
+        {
+            var start = builder.Mark();
+
+            if (!ParseHigh(builder))
+            {
+                builder.Drop(start);
+                return false;
+            }
+
+            while (builder.GetTokenType() == SpringTokenType.MEDIUM_BINOP)
+            {
+                AdvanceWithSpaces(builder);
+                if (!ParseHigh(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.MEDIUM_BINOP, null);
+                builder.Precede(start);
+            }
+            
+            builder.Drop(start);
+            return true;
+        }
+        
+        private bool ParseHigh(PsiBuilder builder)
+        {
+            var start = builder.Mark();
+
+            if (!ParseIdent(builder))
+            {
+                builder.Drop(start);
+                return false;
+            }
+
+            if (builder.GetTokenType() == SpringTokenType.HIGH_BINOP)
+            {
+                AdvanceWithSpaces(builder);
+                if (!ParseHigh(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.HIGH_BINOP, null);
+                return true;
+            }
+
+            builder.Drop(start);
+            return true;
+        }
+
+        private bool ParseIdent(PsiBuilder builder)
+        {
+            var start = builder.Mark();
+            if (builder.GetTokenType() == SpringTokenType.NUMBER)
+            {
+                AdvanceWithSpaces(builder);
+                builder.Done(start, SpringCompositeNodeType.NUMBER, null);
+                return true;
+            }
+
+            if (builder.GetTokenType() == SpringTokenType.IDENT)
+            {
+                AdvanceWithSpaces(builder);
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.VARIABLE, null);
+                return true;
+            }
+            
+            if (builder.GetTokenType() == SpringTokenType.STRING)
+            {
+                AdvanceWithSpaces(builder);
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.STRING, null);
+                return true;
+            }
+
+            if (builder.GetTokenType() == SpringTokenType.LBRACKET)
+            {
+                AdvanceWithSpaces(builder);
+                if (!ParseLow(builder))
+                {
+                    builder.RollbackTo(start);
+                    return false;
+                }
+
+                if (builder.GetTokenType() != SpringTokenType.RBRACKET)
+                {
+                    builder.RollbackTo(start);
+                    builder.Error("Expected ')'");
+                    return false;
+                }
+                AdvanceWithSpaces(builder);
+                builder.Drop(start);
+                return true;
+            }
+            
+            builder.Drop(start);
+            builder.Error("Not ident");
+            return false;
+        }
+        private void AdvanceWithSpaces(PsiBuilder builder)
+        {
+            builder.AdvanceLexer();
+            while (builder.GetTokenType() == SpringTokenType.WHITE_SPACE)
+                builder.AdvanceLexer();
         }
     }
 
