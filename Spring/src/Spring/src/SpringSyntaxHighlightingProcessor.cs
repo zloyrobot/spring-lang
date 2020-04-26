@@ -25,6 +25,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         protected override bool IsLineComment(TokenNodeType tokenType)
         {
             return base.IsLineComment(tokenType);
+            // return SpringTokenType.NUMBER == tokenType;
         }
 
         protected override bool IsString(TokenNodeType tokenType)
@@ -39,7 +40,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         protected override bool IsKeyword(TokenNodeType tokenType)
         {
-            return base.IsKeyword(tokenType) || tokenType.IsConstantLiteral;
+            return base.IsKeyword(tokenType);
         }
     }
 }

@@ -1,0 +1,39 @@
+begin
+    comment 
+        this example was provided by Bob Tennent 
+        to demonstrate non-trivial using call-by-name parameters., this
+        program doesn't work properly with nase-a60 interpreter, however,
+        it does work with the marst translator.,
+        for further discussion see:
+        J.C.Reynolds. Syntactic control of interference. In: Conference
+        Record of the 5th Annual ACM Symposium on Principles of Programming
+        Languages, pp.39-46, Tucson, Arizona, January 1978. ACM, New York.
+        P.W.O'Hearn and R.D.Tennent. Parametricity and local variables.
+        J.ACM, 42(3):658-709, May 1995. Preliminary version appeared in
+        Proceedings of POPL 93
+    ;
+    procedure MAKECOUNTER(USER);
+        procedure USER;
+        begin
+            integer N;
+            procedure INC;
+                begin
+                    N := N - 1
+                end ;
+            N := 0;
+            USER(-N, INC)
+        end ;
+    procedure MYUSER(VAL, INC);
+        integer VAL;
+        procedure INC;
+        begin
+            INC(0);
+            INC(0);
+            OUTINTEGER(1, VAL);
+            INC(0);
+            INC(0);
+            OUTINTEGER(1, VAL)
+        end ;
+    MAKECOUNTER(MYUSER);
+    OUTSTRING(1, "\n")
+end

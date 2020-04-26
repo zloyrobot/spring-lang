@@ -1,0 +1,44 @@
+Language: PsiLanguageType:Spring
+SpringFile
+  SpringBlock
+    SpringTokenType+SpringGenericToken(type:BEGIN_KEYWORD, text:begin)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n )
+    SpringBlockStatPart
+      SpringAssignStat
+        SpringVar
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:x)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        ErrorElement:An arithmetic expression expected
+      SpringTokenType+SpringGenericToken(type:SEMICOLON, text:;)
+      SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n )
+      SpringConditionalStat
+        SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringForStat
+          SpringTokenType+SpringGenericToken(type:FOR_KEYWORD, text:for)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringVar
+            SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:i)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringForList
+            SpringForListElem
+              SpringNumConst
+                SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:DO_KEYWORD, text:do)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringProcedureStat
+            SpringVar
+              SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:ACT1)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+    ErrorElement:'end' expected
+  ErrorElement:Semantical tokens after the program end!
+

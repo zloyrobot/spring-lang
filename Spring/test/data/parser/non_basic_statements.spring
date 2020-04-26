@@ -1,0 +1,9 @@
+begin
+    if true then goto ap;
+abc:
+bca:
+cab:
+    if true then goto abc else if true then goto bca else goto cba;
+    if true then for i := a, b while i ≠ 0 do f;
+    for i := 27 step 3 until 40 do j := j + 1
+end

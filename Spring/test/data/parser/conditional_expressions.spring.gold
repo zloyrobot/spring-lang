@@ -1,0 +1,70 @@
+Language: PsiLanguageType:Spring
+SpringFile
+  SpringBlock
+    SpringTokenType+SpringGenericToken(type:BEGIN_KEYWORD, text:begin)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: \n  )
+    SpringBlockStatPart
+      SpringAssignStat
+        SpringVar
+          SpringTokenType+SpringGenericToken(type:IDENTIFIER, text:b)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringTokenType+SpringGenericToken(type:ASSIGN, text::=)
+        SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+        SpringCondExpr
+          SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringInnerExpr
+            SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+            SpringCondExpr
+              SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+              SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+              SpringInnerExpr
+                SpringTokenType+SpringGenericToken(type:ROUND_LBRACE, text:()
+                SpringCondExpr
+                  SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: \n            )
+                  SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n            )
+                  SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+                  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+                  SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+                SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+            SpringTokenType+SpringGenericToken(type:ROUND_RBRACE, text:))
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringNumConst
+            SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: \n     )
+          SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+          SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+          SpringCondExpr
+            SpringTokenType+SpringGenericToken(type:IF_KEYWORD, text:if)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:LOGICAL_CONST, text:true)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: \n     \n     )
+            SpringTokenType+SpringGenericToken(type:THEN_KEYWORD, text:then)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringNumConst
+              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringTokenType+SpringGenericToken(type:ELSE_KEYWORD, text:else)
+            SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text: )
+            SpringNumConst
+              SpringTokenType+SpringGenericToken(type:UINT_NUMBER, text:1)
+    SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n)
+    SpringTokenType+SpringGenericToken(type:END_KEYWORD, text:end)
+  SpringTokenType+SpringGenericToken(type:WHITE_SPACE_SECTION, text:\n)
+

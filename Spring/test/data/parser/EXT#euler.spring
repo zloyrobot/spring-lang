@@ -1,0 +1,46 @@
+begin
+    procedure EULER(FCT, SUM, EPS, TIM); 
+      value EPS, TIM;
+      integer TIM;
+      real procedure FCT;
+      real SUM, EPS;
+        comment  EULER COMPUTES THE SUM OF FCT(I) FOR I FROM ZERO UP TO
+        INFINITY BY MEANS OF A SUITABLY REFINED EULER TRANSFORMATION. THE
+        SUMMATION IS STOPPED AS SOON AS TIM TIMES IN SUCCESSION THE ABSOLUTE
+        VALUE OF THE TERMS OF THE TRANSFORMED SERIES ARE FOUND TO BE LESS THAN
+        EPS. HENCE, ONE SHOULD PROVIDE A FUNCTION FCT WITH ONE INTEGER ARGUMENT,
+        AN UPPER BOUND EPS, AND AN INTEGER TIM. THE OUTPUT IS THE SUM SUM. EULER
+        IS PARTICULARLY EFFICIENT IN THE CASE OF A SLOWLY CONVERGENT OR
+        DIVERGENT ALTERNATING SERIES;
+        begin
+            integer I, K, N, T;
+            array M[0 : 15];
+            real MN, MP, DS;
+            I := 0;
+            N := 0;
+            T := 0;
+            M[0] := FCT(0);
+            SUM := M[0] ÷ 2;
+            NEXTTERM: I := I + 1;
+            MN := FCT(I);
+            for K := 0 step 1 until N do
+              begin
+                MP := (MN + M[K]) ÷ 2;
+                M[K] := MN; 
+                MN := MP
+            end ;
+            if ABS(MN) < ABS(M[N]) ⊃ N < 15 then begin
+                DS := MN ÷ 2;
+                N := N + 1;
+                M[N] := MN
+            end  else DS := MN;
+            SUM := SUM + DS;
+            if ABS(DS) < EPS then T := T + 1 else T := 0;
+            if T < TIM then goto NEXTTERM
+        end;
+    procedure INV(V);
+        INV := 1.0 ÷ ((V + 1) ↑ 2); 
+    real RESULT;
+    EULER(INV, RESULT, 0.00005, 10);
+    PRINTNLN(RESULT)
+end

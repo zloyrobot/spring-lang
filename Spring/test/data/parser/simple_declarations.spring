@@ -1,0 +1,8 @@
+begin
+    boolean a, b;
+    own real a, b;
+    boolean array a[1:2, 2 + 3 / 4: 55], c[3:3];
+    own integer array x[100:200];
+    switch s := x[1,2,3], 4, rr;
+    print("hello")
+end
