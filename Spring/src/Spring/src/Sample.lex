@@ -43,6 +43,8 @@ STRING_TEXT="\""(.)*"\""
 <YYINITIAL> for { return currentTokenType = SpringTokenType.FOR; }
 <YYINITIAL> read { return currentTokenType = SpringTokenType.READ; }
 <YYINITIAL> write { return currentTokenType = SpringTokenType.WRITE; }
+<YYINITIAL> if { return currentTokenType = SpringTokenType.IF; }
+<YYINITIAL> else { return currentTokenType = SpringTokenType.ELSE; }
 <YYINITIAL> ":=" { return currentTokenType = SpringTokenType.ASSIGN; }
 <YYINITIAL> ["><="] { return currentTokenType = SpringTokenType.LOGIC_BINOP; }
 <YYINITIAL> ["+-"] { return currentTokenType = SpringTokenType.LOW_BINOP; }
@@ -53,7 +55,6 @@ STRING_TEXT="\""(.)*"\""
 <YYINITIAL> ")" { return currentTokenType = SpringTokenType.RBRACKET; }
 <YYINITIAL> "{" { return currentTokenType = SpringTokenType.LFBRACKET; }
 <YYINITIAL> "}" { return currentTokenType = SpringTokenType.RFBRACKET; }
-<YYINITIAL> for { return currentTokenType = SpringTokenType.FOR; }
 <YYINITIAL> ";" { return currentTokenType = SpringTokenType.SEQ; }
 <YYINITIAL> {DIGIT}+ { return currentTokenType = SpringTokenType.NUMBER; }	
 <YYINITIAL> {STRING_TEXT} { return currentTokenType = SpringTokenType.STRING; }	

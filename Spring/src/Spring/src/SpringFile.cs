@@ -94,4 +94,10 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override PsiLanguageType Language => SpringLanguage.Instance;
     }
     
+    public class SpringIf : CompositeElement
+    {
+        public override NodeType NodeType => SpringCompositeNodeType.IF;
+
+        public override PsiLanguageType Language => SpringLanguage.Instance;
+    }
 }

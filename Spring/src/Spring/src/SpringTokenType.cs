@@ -27,8 +27,10 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static SpringTokenType RFBRACKET = new SpringTokenType("RFBRACKET", 13);
         public static SpringTokenType LOGIC_BINOP = new SpringTokenType("LOGIC_BINOP", 14);
         public static SpringTokenType FOR = new SpringTokenType("FOR", 15);
-        public static SpringTokenType READ = new SpringTokenType("FOR", 16);
-        public static SpringTokenType WRITE = new SpringTokenType("FOR", 17);
+        public static SpringTokenType READ = new SpringTokenType("READ", 16);
+        public static SpringTokenType WRITE = new SpringTokenType("WRITE", 17);
+        public static SpringTokenType IF = new SpringTokenType("IF", 20);
+        public static SpringTokenType ELSE = new SpringTokenType("ELSE", 20);
 
         public SpringTokenType(string s, int index) : base(s, index)
         {
@@ -48,7 +50,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override bool IsConstantLiteral => this == NUMBER;
         
         public override bool IsIdentifier => this == IDENT;
-        public override bool IsKeyword => this == FOR || this == READ || this == WRITE;
+        public override bool IsKeyword => this == FOR || this == READ || this == WRITE || this == IF || this == ELSE;
         public override string TokenRepresentation { get; }
     }
 }

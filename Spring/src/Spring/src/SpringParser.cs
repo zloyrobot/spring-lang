@@ -60,9 +60,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 builder.Drop(start);
                 return false;
             }
-            
-            AdvanceWithSpaces(builder);
-            
+
             if (builder.Eof() || builder.GetTokenType() == SpringTokenType.RFBRACKET)
             {
                 builder.Drop(start);
@@ -82,71 +80,171 @@ namespace JetBrains.ReSharper.Plugins.Spring
         private bool ParseStmt(PsiBuilder builder)
         {
             var start = builder.Mark();
-
-            if (builder.GetTokenType() == SpringTokenType.FOR)
+            if (builder.GetTokenType() == SpringTokenType.IF)
             {
                 AdvanceWithSpaces(builder);
+                
                 if (builder.GetTokenType() != SpringTokenType.LBRACKET)
                 {
                     builder.Drop(start);
                     builder.Error("Missing '('");
                     return false;
                 }
+                
                 AdvanceWithSpaces(builder);
-                if (!ParseAssign(builder))
-                {
-                    builder.Drop(start);
-                    return false;
-                }
-                if (builder.GetTokenType() != SpringTokenType.SEQ)
-                {
-                    builder.Drop(start);
-                    builder.Error("Missing ';'");
-                    return false;
-                }
-                AdvanceWithSpaces(builder);
+                
                 if (!ParseLogic(builder)) 
                 {
                     builder.Drop(start);
                     return false;
                 }
-                if (builder.GetTokenType() != SpringTokenType.SEQ)
-                {
-                    builder.Drop(start);
-                    builder.Error("Missing ';'");
-                    return false;
-                }
-                AdvanceWithSpaces(builder);
-                if (!ParseAssign(builder))
-                {
-                    builder.Drop(start);
-                    return false;
-                }
+                
                 if (builder.GetTokenType() != SpringTokenType.RBRACKET)
                 {
                     builder.Drop(start);
                     builder.Error("Missing ')'");
                     return false;
                 }
+                
                 AdvanceWithSpaces(builder);
+                
                 if (builder.GetTokenType() != SpringTokenType.LFBRACKET)
                 {
                     builder.Drop(start);
                     builder.Error("Missing '{'");
                     return false;
                 }
+                
                 AdvanceWithSpaces(builder);
+                
                 if (!ParseSeq(builder))
                 {
                     builder.Drop(start);
                     return false;
                 }
+                
                 if (builder.GetTokenType() != SpringTokenType.RFBRACKET)
                 {
                     builder.Drop(start);
                     builder.Error("Missing '}'");
                     return false;
                 }
+                
+                AdvanceWithSpaces(builder);
+                
+                if (builder.GetTokenType() == SpringTokenType.ELSE)
+                {
+                    AdvanceWithSpaces(builder);
+                    
+                    if (builder.GetTokenType() != SpringTokenType.LFBRACKET)
+                    {
+                        builder.Drop(start);
+                        builder.Error("Missing '{'");
+                        return false;
+                    }
+                    
+                    AdvanceWithSpaces(builder);
+                    
+                    if (!ParseSeq(builder))
+                    {
+                        builder.Drop(start);
+                        return false;
+                    }
+                    
+                    if (builder.GetTokenType() != SpringTokenType.RFBRACKET)
+                    {
+                        builder.Drop(start);
+                        builder.Error("Missing '}'");
+                        return false;
+                    }
+                    
+                    AdvanceWithSpaces(builder);
+                }
+                builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.IF, null);
+                return true;
+            }
+            
+            if (builder.GetTokenType() == SpringTokenType.FOR)
+            {
+                AdvanceWithSpaces(builder);
+                
+                if (builder.GetTokenType() != SpringTokenType.LBRACKET)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing '('");
+                    return false;
+                }
+                
+                AdvanceWithSpaces(builder);
+                
+                if (!ParseAssign(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                
+                if (builder.GetTokenType() != SpringTokenType.SEQ)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing ';'");
+                    return false;
+                }
+                
+                AdvanceWithSpaces(builder);
+                
+                if (!ParseLogic(builder)) 
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                
+                if (builder.GetTokenType() != SpringTokenType.SEQ)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing ';'");
+                    return false;
+                }
+                
+                AdvanceWithSpaces(builder);
+                
+                if (!ParseAssign(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                
+                if (builder.GetTokenType() != SpringTokenType.RBRACKET)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing ')'");
+                    return false;
+                }
+                
+                AdvanceWithSpaces(builder);
+                
+                if (builder.GetTokenType() != SpringTokenType.LFBRACKET)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing '{'");
+                    return false;
+                }
+                
+                AdvanceWithSpaces(builder);
+                
+                if (!ParseSeq(builder))
+                {
+                    builder.Drop(start);
+                    return false;
+                }
+                
+                if (builder.GetTokenType() != SpringTokenType.RFBRACKET)
+                {
+                    builder.Drop(start);
+                    builder.Error("Missing '}'");
+                    return false;
+                }
+                
+                AdvanceWithSpaces(builder);
                 builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.FOR, null);
                 return true;
             }
@@ -154,25 +252,31 @@ namespace JetBrains.ReSharper.Plugins.Spring
             if (builder.GetTokenType() == SpringTokenType.WRITE)
             {
                 AdvanceWithSpaces(builder);
+                
                 if (builder.GetTokenType() != SpringTokenType.LBRACKET)
                 {
                     builder.RollbackTo(start);
                     builder.Error("Missing '('");
                     return false;
                 }
+                
                 AdvanceWithSpaces(builder);
+                
                 if (!ParseLogic(builder))
                 {
                     builder.Drop(start);
                     return false;
                 }
+                
                 if (builder.GetTokenType() != SpringTokenType.RBRACKET)
                 {
                     builder.RollbackTo(start);
                     builder.Error("Missing ')'");
                     return false;
                 }
+                
                 AdvanceWithSpaces(builder);
+                
                 builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.WRITE, null);
                 
                 if (builder.GetTokenType() != SpringTokenType.SEQ)
@@ -181,6 +285,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     return false;
                 }
                 
+                AdvanceWithSpaces(builder);
                 return true;
             }
 
@@ -197,6 +302,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 return false;
             }
 
+            AdvanceWithSpaces(builder);
             builder.Drop(start);
             return true;
         }
@@ -246,6 +352,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             while (builder.GetTokenType() == SpringTokenType.LOGIC_BINOP)
             {
                 AdvanceWithSpaces(builder);
+                
                 if (!ParseLow(builder))
                 {
                     builder.Drop(start);
@@ -272,6 +379,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             while (builder.GetTokenType() == SpringTokenType.LOW_BINOP)
             {
                 AdvanceWithSpaces(builder);
+                
                 if (!ParseMedium(builder))
                 {
                     builder.Drop(start);
@@ -299,11 +407,13 @@ namespace JetBrains.ReSharper.Plugins.Spring
             while (builder.GetTokenType() == SpringTokenType.MEDIUM_BINOP)
             {
                 AdvanceWithSpaces(builder);
+                
                 if (!ParseHigh(builder))
                 {
                     builder.Drop(start);
                     return false;
                 }
+                
                 builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.MEDIUM_BINOP, null);
                 builder.Precede(start);
             }
@@ -345,20 +455,25 @@ namespace JetBrains.ReSharper.Plugins.Spring
             if (builder.GetTokenType() == SpringTokenType.READ)
             {
                 AdvanceWithSpaces(builder);
+                
                 if (builder.GetTokenType() != SpringTokenType.LBRACKET)
                 {
                     builder.RollbackTo(start);
                     builder.Error("Missing '('");
                     return false;
                 }
+                
                 AdvanceWithSpaces(builder);
+                
                 if (builder.GetTokenType() != SpringTokenType.RBRACKET)
                 {
                     builder.RollbackTo(start);
                     builder.Error("Missing ')'");
                     return false;
                 }
+                
                 AdvanceWithSpaces(builder);
+                
                 builder.DoneBeforeWhitespaces(start, SpringCompositeNodeType.READ, null);
                 return true;
             }
@@ -387,6 +502,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             if (builder.GetTokenType() == SpringTokenType.LBRACKET)
             {
                 AdvanceWithSpaces(builder);
+                
                 if (!ParseLogic(builder))
                 {
                     builder.RollbackTo(start);
@@ -399,6 +515,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     builder.Error("Missing ')'");
                     return false;
                 }
+                
                 AdvanceWithSpaces(builder);
                 builder.Drop(start);
                 return true;
