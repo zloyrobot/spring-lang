@@ -1,4 +1,5 @@
-﻿﻿using System.Collections.Generic;
+﻿﻿using System;
+ using System.Collections.Generic;
 using JetBrains.Annotations;
  using JetBrains.ReSharper.Daemon.SyntaxHighlighting;
  using JetBrains.ReSharper.Host.Features.SyntaxHighlighting;
@@ -13,8 +14,9 @@ using JetBrains.ReSharper.TestFramework;
 using JetBrains.Text;
  using JetBrains.Util;
 using NUnit.Framework;
+ using Sample;
 
-namespace JetBrains.ReSharper.Plugins.Spring
+ namespace JetBrains.ReSharper.Plugins.Spring
 {
   [Language(typeof(SpringLanguage))]
   class SpringLanguageService : LanguageService
@@ -53,7 +55,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
     {
       public ILexer CreateLexer(IBuffer buffer)
       {
-        return new CSharpLexer(buffer);
+        return new SampleLexerGenerated(buffer);
       }
     }
   }

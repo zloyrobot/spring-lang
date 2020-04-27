@@ -1,7 +1,7 @@
 RiderSdkPackageVersion.props
 
 # Generated files
-*Generated.cs
+Generated.cs
 *Generated.fs
 
 # Build results

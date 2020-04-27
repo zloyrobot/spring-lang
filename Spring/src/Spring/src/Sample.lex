@@ -18,6 +18,8 @@ TokenNodeType currentTokenType;
 %namespace Sample
 %class SampleLexerGenerated
 
+%implements ILexer
+
 %function _locateToken
 %public
 %type TokenNodeType
@@ -27,20 +29,33 @@ TokenNodeType currentTokenType;
   currentTokenType = null; return currentTokenType;
 %eofval}
 
-
 ALPHA=[A-Za-z]
 DIGIT=[0-9]
 NEWLINE=((\r\n)|\n)
 NONNEWLINE_WHITE_SPACE_CHAR=[\ \t\b\012]
-WHITE_SPACE_CHAR=[{NEWLINE}\ \t\b\012]
+WHITE_SPACE_CHAR=({NEWLINE}|[\ \t\b\012])
 STRING_TEXT="\""(.)*"\""
-STRING_TEXT2="\""(.)*"xx"
 
 
 
 %% 
-<YYINITIAL> "=" { return currentTokenType = SpringTokenType.EQ; }
+<YYINITIAL> {WHITE_SPACE_CHAR}* { return currentTokenType = SpringTokenType.WHITE_SPACE; }
+<YYINITIAL> for { return currentTokenType = SpringTokenType.FOR; }
+<YYINITIAL> read { return currentTokenType = SpringTokenType.READ; }
+<YYINITIAL> write { return currentTokenType = SpringTokenType.WRITE; }
+<YYINITIAL> if { return currentTokenType = SpringTokenType.IF; }
+<YYINITIAL> else { return currentTokenType = SpringTokenType.ELSE; }
+<YYINITIAL> ":=" { return currentTokenType = SpringTokenType.ASSIGN; }
+<YYINITIAL> ["><="] { return currentTokenType = SpringTokenType.LOGIC_BINOP; }
+<YYINITIAL> ["+-"] { return currentTokenType = SpringTokenType.LOW_BINOP; }
+<YYINITIAL> ["*/"] { return currentTokenType = SpringTokenType.MEDIUM_BINOP; }
+<YYINITIAL> "^" { return currentTokenType = SpringTokenType.HIGH_BINOP; }
+<YYINITIAL> {ALPHA}+ { return currentTokenType = SpringTokenType.IDENT; }
+<YYINITIAL> "(" { return currentTokenType = SpringTokenType.LBRACKET; }
+<YYINITIAL> ")" { return currentTokenType = SpringTokenType.RBRACKET; }
+<YYINITIAL> "{" { return currentTokenType = SpringTokenType.LFBRACKET; }
+<YYINITIAL> "}" { return currentTokenType = SpringTokenType.RFBRACKET; }
+<YYINITIAL> ";" { return currentTokenType = SpringTokenType.SEQ; }
 <YYINITIAL> {DIGIT}+ { return currentTokenType = SpringTokenType.NUMBER; }	
 <YYINITIAL> {STRING_TEXT} { return currentTokenType = SpringTokenType.STRING; }	
-<YYINITIAL> {STRING_TEXT2} { return currentTokenType = SpringTokenType.NUMBER; }	
 <YYINITIAL> . { return currentTokenType = SpringTokenType.BAD_CHARACTER; }	
