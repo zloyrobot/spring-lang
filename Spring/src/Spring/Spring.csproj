@@ -4,10 +4,11 @@
     <RootNamespace>JetBrains.ReSharper.Plugins.Spring</RootNamespace>
     <AssemblyName>JetBrains.ReSharper.Plugins.Spring</AssemblyName>
     <JetTestProject>True</JetTestProject>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Rider.SDK" Version="$(RiderSDKVersion)" />
+    <PackageReference Include="JetBrains.Rider.SDK" Version="2021.1.2" />
     <PackageReference Include="System.ValueTuple" Version="$(ValueTupleVersion)" />
     <PackageReference Include="NUnit.Console" Version="3.10.0" />
     <CsLex Include="src/Sample.lex" />
