@@ -37,8 +37,8 @@ namespace JetBrains.ReSharper.Plugins.Pascal
 
         public override IParser CreateParser(ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
         {
+            // return new PascalParser("");
             return null;
-            // return new PascalParser(lexer);
         }
 
         public override IEnumerable<ITypeDeclaration> FindTypeDeclarations(IFile file)
@@ -55,7 +55,7 @@ namespace JetBrains.ReSharper.Plugins.Pascal
         {
             public ILexer CreateLexer(IBuffer buffer)
             {
-                return new PascalLexerCustom();
+                return new CSharpLexer(buffer);
                 // return new PascalLexerCustom(buffer);
             }
         }
