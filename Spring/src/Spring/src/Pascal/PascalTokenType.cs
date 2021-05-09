@@ -1,5 +1,4 @@
 using System.Text;
-using JetBrains.ReSharper.Plugins.Pascal;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;

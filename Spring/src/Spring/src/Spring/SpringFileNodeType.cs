@@ -1,7 +1,7 @@
 using System;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 
-namespace JetBrains.ReSharper.Plugins.Spring
+namespace JetBrains.ReSharper.Plugins.Spring.Spring
 {
     internal class SpringFileNodeType : CompositeNodeType
     {

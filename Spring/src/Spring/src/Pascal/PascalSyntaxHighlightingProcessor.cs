@@ -1,6 +1,5 @@
 using JetBrains.ReSharper.Daemon.SyntaxHighlighting;
 using JetBrains.ReSharper.Host.Features.SyntaxHighlighting;
-using JetBrains.ReSharper.Plugins.Pascal;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Parsing;
 

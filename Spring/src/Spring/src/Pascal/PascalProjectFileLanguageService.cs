@@ -1,5 +1,4 @@
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Plugins.Pascal;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Parsing;

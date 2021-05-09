@@ -1,12 +1,12 @@
-using JetBrains.ReSharper.Plugins.Spring;
+using JetBrains.ReSharper.Plugins.Spring.Pascal;
 using JetBrains.ReSharper.TestFramework;
 using NUnit.Framework;
 
 namespace JetBrains.ReSharper.Plugins.SpringTests
 {
     [TestFixture]
-    [TestFileExtension(".spring")]
-    public class ParserTest : ParserTestBase<SpringLanguage>
+    [TestFileExtension(".pas")]
+    public class ParserTest : ParserTestBase<PascalLanguage>
     {
         protected override string RelativeTestDataPath => "parser";
 

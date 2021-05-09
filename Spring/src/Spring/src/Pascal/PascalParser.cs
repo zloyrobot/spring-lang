@@ -1,7 +1,10 @@
 using JetBrains.Lifetimes;
+using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.TreeBuilder;
+using JetBrains.Text;
 
 namespace JetBrains.ReSharper.Plugins.Spring.Pascal
 {
@@ -183,14 +186,22 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
         public IFile ParseFile()
         {
             using var def = Lifetime.Define();
-            var builder = new PsiBuilder(_myLexer, SpringFileNodeType.Instance, new TokenFactory(), def.Lifetime);
+            var builder = new PsiBuilder(_myLexer, PascalFileNodeType.Instance, new TokenFactory(), def.Lifetime);
             var fileMark = builder.Mark();
 
             ParseCompoundStatement(builder);
 
-            builder.Done(fileMark, SpringFileNodeType.Instance, null);
+            builder.Done(fileMark, PascalFileNodeType.Instance, null);
             var file = (IFile) builder.BuildTree();
             return file;
+        }
+        
+        internal class TokenFactory : IPsiBuilderTokenFactory
+        {
+            public LeafElementBase CreateToken(TokenNodeType tokenNodeType, IBuffer buffer, int startOffset, int endOffset)
+            {
+                return tokenNodeType.Create(buffer, new TreeOffset(startOffset), new TreeOffset(endOffset));
+            }
         }
     }
 }

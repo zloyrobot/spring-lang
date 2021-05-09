@@ -5,7 +5,7 @@ using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.Text;
 using JetBrains.UI.Icons;
 
-namespace JetBrains.ReSharper.Plugins.Spring
+namespace JetBrains.ReSharper.Plugins.Spring.Spring
 {
     [ProjectFileType(typeof(SpringProjectFileType))]
     public class SpringProjectFileLanguageService : ProjectFileLanguageService

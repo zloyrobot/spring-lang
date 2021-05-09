@@ -3,7 +3,7 @@ using JetBrains.ReSharper.Host.Features.SyntaxHighlighting;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Parsing;
 
-namespace JetBrains.ReSharper.Plugins.Spring
+namespace JetBrains.ReSharper.Plugins.Spring.Spring
 {
     [Language(typeof(SpringLanguage))]
     internal class SpringSyntaxHighlightingManager : RiderSyntaxHighlightingManager

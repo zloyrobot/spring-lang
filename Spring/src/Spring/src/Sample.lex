@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.Text;
 using JetBrains.Util;
-using JetBrains.ReSharper.Plugins.Spring;
+using JetBrains.ReSharper.Plugins.Spring.Spring;
 
 %%
 %{
