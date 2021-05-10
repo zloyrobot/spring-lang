@@ -3,7 +3,7 @@ using JetBrains.ReSharper.Host.Features.SyntaxHighlighting;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Parsing;
 
-namespace JetBrains.ReSharper.Plugins.Spring.Spring
+namespace JetBrains.ReSharper.Plugins.Spring
 {
     [Language(typeof(SpringLanguage))]
     internal class SpringSyntaxHighlightingManager : RiderSyntaxHighlightingManager
@@ -19,27 +19,22 @@ namespace JetBrains.ReSharper.Plugins.Spring.Spring
     {
         protected override bool IsBlockComment(TokenNodeType tokenType)
         {
-            return base.IsBlockComment(tokenType);
-        }
-
-        protected override bool IsLineComment(TokenNodeType tokenType)
-        {
-            return base.IsLineComment(tokenType);
+            return tokenType.IsComment;
         }
 
         protected override bool IsString(TokenNodeType tokenType)
         {
-            return base.IsString(tokenType);
+            return tokenType.IsStringLiteral;
         }
 
         protected override bool IsNumber(TokenNodeType tokenType)
         {
-            return base.IsNumber(tokenType);
+            return tokenType.IsConstantLiteral;
         }
 
         protected override bool IsKeyword(TokenNodeType tokenType)
         {
-            return base.IsKeyword(tokenType) || tokenType.IsConstantLiteral;
+            return base.IsKeyword(tokenType) || tokenType.IsKeyword;
         }
     }
 }

@@ -6,17 +6,17 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.TreeBuilder;
 using JetBrains.Text;
 
-namespace JetBrains.ReSharper.Plugins.Spring.Pascal
+namespace JetBrains.ReSharper.Plugins.Spring
 {
-    internal class PascalParser : IParser
+    internal class SpringParser : IParser
     {
         private readonly ILexer _myLexer;
 
-        public PascalParser(ILexer lexer)
+        public SpringParser(ILexer lexer)
         {
             _myLexer = lexer;
         }
-        private static void ExpectToken(PsiBuilder builder, PascalTokenType tokenType)
+        private static void ExpectToken(PsiBuilder builder, SpringTokenType tokenType)
         {
             var tt = builder.GetTokenType();
             if (tt != tokenType)
@@ -26,20 +26,20 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
         private void ParseCompoundStatement(PsiBuilder builder)
         {
             var tt = builder.GetTokenType();
-            if (tt == PascalTokenType.Begin)
+            if (tt == SpringTokenType.Begin)
             {
                 var start = builder.Mark();
                 builder.AdvanceLexer();
                 ParseStatementList(builder);
 
-                if (builder.GetTokenType() != PascalTokenType.End)
+                if (builder.GetTokenType() != SpringTokenType.End)
                     builder.Error("Expected 'END'");
                 else
                     builder.AdvanceLexer();
 
-                builder.Done(start, PascalCompositeNodeType.CompoundStatement, null);
+                builder.Done(start, SpringCompositeNodeType.CompoundStatement, null);
             }
-            else if (tt == PascalTokenType.End)
+            else if (tt == SpringTokenType.End)
                 return;
             else builder.AdvanceLexer();
         }
@@ -49,7 +49,7 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
             var tt = builder.GetTokenType();
             ParseStatement(builder);
 
-            while (tt == PascalTokenType.Semi)
+            while (tt == SpringTokenType.Semi)
             {
                 builder.AdvanceLexer();
                 ParseStatement(builder);
@@ -62,11 +62,11 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
         private void ParseStatement(PsiBuilder builder)
         {
             var tt = builder.GetTokenType();
-            if (tt == PascalTokenType.Begin)
+            if (tt == SpringTokenType.Begin)
             {
                 ParseCompoundStatement(builder);
             }
-            else if (tt == PascalTokenType.Variable)
+            else if (tt == SpringTokenType.Variable)
             {
                 ParseAssignStatement(builder);
             }
@@ -74,16 +74,16 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
 
         private void ParseAssignStatement(PsiBuilder builder)
         {
-            // var varToken = EatToken(PascalTokenType.Variable);
+            // var varToken = EatToken(SpringTokenType.Variable);
             var start = builder.Mark();
             var varToken = builder.GetToken();
             builder.AdvanceLexer();
-            ExpectToken(builder, PascalTokenType.Assignment);
+            ExpectToken(builder, SpringTokenType.Assignment);
             var assignToken = builder.GetToken();
             builder.AdvanceLexer();
             ParseExpr(builder);
             var statement = new AssignStatementNode(new VariableNode(varToken), assignToken);
-            builder.Done(start, PascalCompositeNodeType.AssignmentStatement, statement);
+            builder.Done(start, SpringCompositeNodeType.AssignmentStatement, statement);
         }
 
         private void ParseExpr(PsiBuilder builder)
@@ -94,15 +94,15 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
 
             var tt = builder.GetTokenType();
 
-            while (tt == PascalTokenType.Plus
-                   || tt == PascalTokenType.Minus)
+            while (tt == SpringTokenType.Plus
+                   || tt == SpringTokenType.Minus)
             {
                 left = new BinOpNode(builder.GetToken());
                 builder.AdvanceLexer();
                 ParseTerm(builder);
             }
 
-            builder.Done(start, PascalCompositeNodeType.Expression, left);
+            builder.Done(start, SpringCompositeNodeType.Expression, left);
         }
 
         private void ParseTerm(PsiBuilder builder)
@@ -112,15 +112,15 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
             var tt = builder.GetTokenType();
             BinOpNode left = null;
 
-            while (tt == PascalTokenType.Multiply
-                   || tt == PascalTokenType.Divide)
+            while (tt == SpringTokenType.Multiply
+                   || tt == SpringTokenType.Divide)
             {
                 left = new BinOpNode(builder.GetToken());
                 builder.AdvanceLexer();
                 ParseFactor(builder);
             }
 
-            builder.Done(start, PascalCompositeNodeType.Expression, left);
+            builder.Done(start, SpringCompositeNodeType.Expression, left);
         }
 
         private void ParseFactor(PsiBuilder builder)
@@ -129,30 +129,30 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
 
             var tt = builder.GetTokenType();
 
-            if (tt == PascalTokenType.Plus
-                || tt == PascalTokenType.Minus)
+            if (tt == SpringTokenType.Plus
+                || tt == SpringTokenType.Minus)
             {
                 ParseUnaryExpr(builder);
                 return;
             }
 
-            if (tt == PascalTokenType.LeftParenthesis)
+            if (tt == SpringTokenType.LeftParenthesis)
             {
                 ParseBracketExpr(builder);
             }
-            if (tt == PascalTokenType.Variable)
+            if (tt == SpringTokenType.Variable)
             {
                 ParseVariable(builder);
             }
-            ExpectToken(builder, PascalTokenType.Number);
+            ExpectToken(builder, SpringTokenType.Number);
             builder.AdvanceLexer();
-            builder.Done(start, PascalFileNodeType.Num, new NumNode(builder.GetToken()));
+            builder.Done(start, SpringFileNodeType.Num, new NumNode(builder.GetToken()));
         }
 
         private void ParseVariable(PsiBuilder builder)
         {
             var start = builder.Mark();
-            builder.Done(start, PascalFileNodeType.Num, new VariableNode(builder.GetToken()));
+            builder.Done(start, SpringFileNodeType.Num, new VariableNode(builder.GetToken()));
             builder.AdvanceLexer();
         }
 
@@ -162,8 +162,8 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
             var tt = builder.GetTokenType();
 
 
-            if (tt == PascalTokenType.Plus
-                || tt == PascalTokenType.Minus)
+            if (tt == SpringTokenType.Plus
+                || tt == SpringTokenType.Minus)
             {
                 ParseUnaryExpr(builder);
             }
@@ -171,7 +171,7 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
             {
                 ParseFactor(builder);
             }
-            builder.Done(start, PascalCompositeNodeType.UnaryOp, new UnaryOpNode(builder.GetToken()));
+            builder.Done(start, SpringCompositeNodeType.UnaryOp, new UnaryOpNode(builder.GetToken()));
             builder.AdvanceLexer();
         }
 
@@ -179,19 +179,19 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
         {
             builder.AdvanceLexer();
             ParseExpr(builder);
-            ExpectToken(builder, PascalTokenType.RightParenthesis);
+            ExpectToken(builder, SpringTokenType.RightParenthesis);
             builder.AdvanceLexer();
         }
 
         public IFile ParseFile()
         {
             using var def = Lifetime.Define();
-            var builder = new PsiBuilder(_myLexer, PascalFileNodeType.Instance, new TokenFactory(), def.Lifetime);
+            var builder = new PsiBuilder(_myLexer, SpringFileNodeType.Instance, new TokenFactory(), def.Lifetime);
             var fileMark = builder.Mark();
 
             ParseCompoundStatement(builder);
 
-            builder.Done(fileMark, PascalFileNodeType.Instance, null);
+            builder.Done(fileMark, SpringFileNodeType.Instance, null);
             var file = (IFile) builder.BuildTree();
             return file;
         }

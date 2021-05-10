@@ -10,19 +10,19 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Text;
 using JetBrains.Util;
 
-namespace JetBrains.ReSharper.Plugins.Spring.Pascal
+namespace JetBrains.ReSharper.Plugins.Spring
 {
-    [Language(typeof(PascalLanguage))]
-    class PascalLanguageService : LanguageService
+    [Language(typeof(SpringLanguage))]
+    class SpringLanguageService : LanguageService
     {
-        public PascalLanguageService([NotNull] PsiLanguageType psiLanguageType,
+        public SpringLanguageService([NotNull] PsiLanguageType psiLanguageType,
             [NotNull] IConstantValueService constantValueService) : base(psiLanguageType, constantValueService)
         {
         }
 
         public override ILexerFactory GetPrimaryLexerFactory()
         {
-            return new PascalLexerFactory();
+            return new SpringLexerFactory();
         }
 
         public override ILexer CreateFilteringLexer(ILexer lexer)
@@ -32,7 +32,7 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
 
         public override IParser CreateParser(ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
         {
-            // return new PascalParser("");
+            // return new SpringParser("");
             return null;
         }
 
@@ -46,12 +46,11 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
         public override bool SupportTypeMemberCache => false;
         public override ITypePresenter TypePresenter => CLRTypePresenter.Instance;
 
-        internal class PascalLexerFactory : ILexerFactory
+        internal class SpringLexerFactory : ILexerFactory
         {
             public ILexer CreateLexer(IBuffer buffer)
             {
-                return new CSharpLexer(buffer);
-                // return new PascalLexerCustom(buffer);
+                return new SpringLexer(buffer);
             }
         }
     }

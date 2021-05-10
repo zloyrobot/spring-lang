@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using JetBrains.ProjectModel;
 
-namespace JetBrains.ReSharper.Plugins.Spring.Spring
+namespace JetBrains.ReSharper.Plugins.Spring
 {
     [ProjectFileTypeDefinition(Name)]
     public class SpringProjectFileType : KnownProjectFileType
     {
         public new const string Name = "Spring";
 
-        public new static SpringProjectFileType Instance { get; private set; }
+        public new static KnownProjectFileType Instance  { get; private set; }
 
         private SpringProjectFileType() : base(Name, "Spring", new[] {Spring_EXTENSION})
         {
@@ -27,6 +27,6 @@ namespace JetBrains.ReSharper.Plugins.Spring.Spring
         {
         }
 
-        public const string Spring_EXTENSION = ".Spring";
+        public const string Spring_EXTENSION = ".pas";
     }
 }

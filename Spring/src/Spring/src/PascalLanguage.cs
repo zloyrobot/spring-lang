@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi;
 
-namespace JetBrains.ReSharper.Plugins.Spring.Spring
+namespace JetBrains.ReSharper.Plugins.Spring
 {
     [LanguageDefinition(Name)]
     public class SpringLanguage : KnownLanguage

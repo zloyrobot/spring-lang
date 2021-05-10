@@ -1,6 +1,6 @@
 using JetBrains.ReSharper.Psi.Parsing;
 
-namespace JetBrains.ReSharper.Plugins.Spring.Pascal
+namespace JetBrains.ReSharper.Plugins.Spring
 {
     internal class AssignStatementNode : Node
     {
@@ -22,9 +22,9 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
     {
         private Token Token { get; set; }
 
-        public NumNode(Token pascalToken)
+        public NumNode(Token SpringToken)
         {
-            Token = pascalToken;
+            Token = SpringToken;
         }
     }
 
@@ -32,9 +32,9 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
     {
         private Token Token { get; }
 
-        public VariableNode(Token pascalToken)
+        public VariableNode(Token SpringToken)
         {
-            Token = pascalToken;
+            Token = SpringToken;
         }
     }
 

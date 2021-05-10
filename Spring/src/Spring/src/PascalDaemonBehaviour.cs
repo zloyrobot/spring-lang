@@ -1,10 +1,10 @@
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 
-namespace JetBrains.ReSharper.Plugins.Spring.Pascal
+namespace JetBrains.ReSharper.Plugins.Spring
 {
-    [Language(typeof(PascalLanguage))]
-    class PascalDaemonBehaviour : LanguageSpecificDaemonBehavior
+    [Language(typeof(SpringLanguage))]
+    class SpringDaemonBehaviour : LanguageSpecificDaemonBehavior
     {
         public override ErrorStripeRequest InitialErrorStripe(IPsiSourceFile sourceFile)
         {

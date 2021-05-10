@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.Text;
 
-namespace JetBrains.ReSharper.Plugins.Spring.Pascal
+namespace JetBrains.ReSharper.Plugins.Spring
 {
-    internal class PascalLexerAdvanced : ILexer
+    internal class SpringLexer : ILexer
     {
         public void Start()
         {
@@ -16,29 +14,22 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
 
         public void Advance()
         {
-            _curPos += 1;
-
-            _curChar = _curPos < Buffer.Length ? Buffer[_curPos] : char.MinValue;
-            NextToken();
-        }
-
-        private void NextToken()
-        {
+            Move();
             switch (_curChar)
             {
                 case char.MinValue:
-                    _curToken = new PascalToken(PascalTokenType.None, "");
+                    _curToken = new SpringToken(SpringTokenType.None, "");
                     return;
                 case ' ':
                 {
                     while (_curChar != char.MinValue && _curChar == ' ')
                     {
-                        Advance();
+                        Move();
                     }
 
                     if (_curChar == char.MinValue)
                     {
-                        _curToken = new PascalToken(PascalTokenType.None, "");
+                        _curToken = new SpringToken(SpringTokenType.None, "");
                         return;
                     }
 
@@ -49,28 +40,28 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
             switch (_curChar)
             {
                 case '+':
-                    _curToken = new PascalToken(PascalTokenType.Plus, _curChar.ToString());
-                    Advance();
+                    _curToken = new SpringToken(SpringTokenType.Plus, _curChar.ToString());
+                    Move();
                     return;
                 case '-':
-                    _curToken = new PascalToken(PascalTokenType.Minus, _curChar.ToString());
-                    Advance();
+                    _curToken = new SpringToken(SpringTokenType.Minus, _curChar.ToString());
+                    Move();
                     return;
                 case '*':
-                    _curToken = new PascalToken(PascalTokenType.Multiply, _curChar.ToString());
-                    Advance();
+                    _curToken = new SpringToken(SpringTokenType.Multiply, _curChar.ToString());
+                    Move();
                     return;
                 case '/':
-                    _curToken = new PascalToken(PascalTokenType.Divide, _curChar.ToString());
-                    Advance();
+                    _curToken = new SpringToken(SpringTokenType.Divide, _curChar.ToString());
+                    Move();
                     return;
                 case '(':
-                    _curToken = new PascalToken(PascalTokenType.LeftParenthesis, _curChar.ToString());
-                    Advance();
+                    _curToken = new SpringToken(SpringTokenType.LeftParenthesis, _curChar.ToString());
+                    Move();
                     return;
                 case ')':
-                    _curToken = new PascalToken(PascalTokenType.RightParenthesis, _curChar.ToString());
-                    Advance();
+                    _curToken = new SpringToken(SpringTokenType.RightParenthesis, _curChar.ToString());
+                    Move();
                     return;
                 case >= '0' and <= '9':
                 {
@@ -78,30 +69,30 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
                     while (_curChar >= '0' && _curChar <= '9')
                     {
                         num += _curChar.ToString();
-                        Advance();
+                        Move();
                     }
 
                     if (_curChar == '.')
                     {
                         num += _curChar.ToString();
-                        Advance();
+                        Move();
 
                         if (_curChar >= '0' && _curChar <= '9')
                         {
                             while (_curChar >= '0' && _curChar <= '9')
                             {
                                 num += _curChar.ToString();
-                                Advance();
+                                Move();
                             }
                         }
                         else
                         {
-                            throw new InvalidSyntaxException(
-                                $"Invalid syntax at position {_curPos + 1}. Unexpected symbol {_curChar}");
+                            // throw new InvalidSyntaxException(
+                            //     $"Invalid syntax at position {_curPos + 1}. Unexpected symbol {_curChar}");
                         }
                     }
 
-                    _curToken = new PascalToken(PascalTokenType.Number, num);
+                    _curToken = new SpringToken(SpringTokenType.Number, num);
                     return;
                 }
                 case >= 'a' and <= 'z':
@@ -109,7 +100,7 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
                 {
                     var word = string.Empty;
                     word += _curChar;
-                    Advance();
+                    Move();
 
                     if (_curChar >= 'a' && _curChar <= 'z'
                         || _curChar >= 'A' && _curChar <= 'Z'
@@ -122,43 +113,55 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
                                || _curChar >= '0' && _curChar <= '9')
                         {
                             word += _curChar.ToString();
-                            Advance();
+                            Move();
                         }
                     }
 
                     if (string.Compare(word, "BEGIN", StringComparison.OrdinalIgnoreCase) == 0)
                     {
-                        _curToken = new PascalToken(PascalTokenType.Begin, word);
+                        _curToken = new SpringToken(SpringTokenType.Begin, word);
                     }
                     else if (string.Compare(word, "END", StringComparison.OrdinalIgnoreCase) == 0)
                     {
-                        _curToken = new PascalToken(PascalTokenType.End, word);
+                        _curToken = new SpringToken(SpringTokenType.End, word);
                     }
                     else
                     {
-                        _curToken = new PascalToken(PascalTokenType.Variable, word);
+                        _curToken = new SpringToken(SpringTokenType.Variable, word);
                     }
 
                     return;
                 }
                 case ';':
-                    _curToken = new PascalToken(PascalTokenType.Semi, ";");
-                    Advance();
+                    _curToken = new SpringToken(SpringTokenType.Semi, ";");
+                    Move();
                     return;
                 case '.':
-                    _curToken = new PascalToken(PascalTokenType.Dot, ".");
-                    Advance();
+                    _curToken = new SpringToken(SpringTokenType.Dot, ".");
+                    Move();
                     return;
             }
 
-            Advance();
-            _curToken = new PascalToken(PascalTokenType.Assignment, ":=");
-            Advance();
+            Move();
+            _curToken = new SpringToken(SpringTokenType.Assignment, ":=");
+            Move();
+        }
+
+        private void Move()
+        {
+            _curPos += 1;
+
+            _curChar = _curPos < Buffer.Length ? Buffer[_curPos] : char.MinValue;
         }
 
         private int _curPos;
         private char _curChar;
-        private PascalToken _curToken;
+        private SpringToken _curToken;
+
+        public SpringLexer(IBuffer buffer)
+        {
+            Buffer = buffer;
+        }
 
         public object CurrentPosition
         {
@@ -166,9 +169,9 @@ namespace JetBrains.ReSharper.Plugins.Spring.Pascal
             set => _curPos = (int) value;
         }
 
-        public TokenNodeType TokenType { get; }
-        public int TokenStart { get; }
-        public int TokenEnd { get; }
+        public TokenNodeType TokenType => _curToken.GetTokenType();
+        public int TokenStart => _curChar;
+        public int TokenEnd => TokenStart + _curToken.GetTextLength();
         public IBuffer Buffer { get; }
     }
 }

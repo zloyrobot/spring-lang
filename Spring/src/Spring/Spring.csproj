@@ -11,7 +11,10 @@
     <PackageReference Include="JetBrains.Rider.SDK" Version="2021.1.2" />
     <PackageReference Include="System.ValueTuple" Version="$(ValueTupleVersion)" />
     <PackageReference Include="NUnit.Console" Version="3.10.0" />
-    <CsLex Include="src/Sample.lex" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="src\Pascal" />
   </ItemGroup>
   <Import Project="$(DotNetSdkPath)\Build\SubplatformReference.Psi.Features_test_Framework.Props" Condition="Exists('$(DotNetSdkPath)\Build\SubplatformReference.Psi.Features_test_Framework.Props')" />
 </Project>

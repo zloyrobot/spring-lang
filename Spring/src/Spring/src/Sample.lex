@@ -2,7 +2,7 @@
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.Text;
 using JetBrains.Util;
-using JetBrains.ReSharper.Plugins.Spring.Spring;
+using JetBrains.ReSharper.Plugins.Spring;
 
 %%
 %{
