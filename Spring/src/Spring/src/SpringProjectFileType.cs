@@ -8,9 +8,13 @@ namespace JetBrains.ReSharper.Plugins.Spring
     public class SpringProjectFileType : KnownProjectFileType
     {
         public const string Name = "Spring";
+        public static SpringProjectFileType instance;
         [CanBeNull]
         [UsedImplicitly]
-        public new static KnownProjectFileType Instance  { get; private set; }
+        public new static SpringProjectFileType Instance  {
+            get { return instance ??= new SpringProjectFileType(); }
+            set => instance = value;
+        }
 
         private SpringProjectFileType() : base(Name, "Spring", new[] {Spring_EXTENSION})
         {

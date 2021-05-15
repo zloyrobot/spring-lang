@@ -36,7 +36,7 @@ namespace JetBrains.ReSharper.Plugins.SpringTests
     {
         static PsiFeaturesTestEnvironmentAssembly()
         {
-            //SetJetTestPackagesDir();
+            SetJetTestPackagesDir();
         }
         
         private static void SetJetTestPackagesDir()

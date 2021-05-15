@@ -10,7 +10,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public void Start()
         {
             TokenStart = 0;
-            Move();
+            Advance();
         }
 
         private void SkipWhitespaces()

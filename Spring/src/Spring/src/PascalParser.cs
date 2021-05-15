@@ -16,6 +16,19 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
             _myLexer = lexer;
         }
+        
+        public IFile ParseFile()
+        {
+            using var def = Lifetime.Define();
+            var builder = new TreeBuilder(_myLexer, SpringFileNodeType.Instance, new TokenFactory(), def.Lifetime);
+            var fileMark = builder.Mark();
+            _myLexer.Start();
+            ParseCompoundStatement(builder);
+
+            builder.Done(fileMark, SpringFileNodeType.Instance, null);
+            var file = (IFile) builder.BuildTree();
+            return file;
+        }
         private static void ExpectToken(TreeBuilder builder, SpringTokenType tokenType)
         {
             var tt = builder.GetTokenType();
@@ -41,7 +54,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             }
             else if (tt == SpringTokenType.End)
                 return;
-            else builder.AdvanceLexer();
+            // else builder.AdvanceLexer();
         }
 
         private void ParseStatementList(TreeBuilder builder)
@@ -183,21 +196,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
             builder.AdvanceLexer();
         }
 
-        public IFile ParseFile()
-        {
-            using var def = Lifetime.Define();
-            var builder = new TreeBuilder(_myLexer, SpringFileNodeType.Instance, new TokenFactory(), def.Lifetime);
-            var fileMark = builder.Mark();
-            _myLexer.Start();
-            builder.AdvanceLexer();
-
-            ParseCompoundStatement(builder);
-
-            builder.Done(fileMark, SpringFileNodeType.Instance, null);
-            var file = (IFile) builder.BuildTree();
-            return file;
-        }
-        
         public class TokenFactory : IPsiBuilderTokenFactory
         {
             public LeafElementBase CreateToken(TokenNodeType tokenNodeType, IBuffer buffer, int startOffset, int endOffset)
