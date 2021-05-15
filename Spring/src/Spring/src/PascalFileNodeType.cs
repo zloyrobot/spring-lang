@@ -3,7 +3,7 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 
 namespace JetBrains.ReSharper.Plugins.Spring
 {
-    internal class SpringFileNodeType : CompositeNodeType
+    public class SpringFileNodeType : CompositeNodeType
     {
         public SpringFileNodeType(string s, int index) : base(s, index)
         {
@@ -19,7 +19,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
     }
 
-    internal class SpringCompositeNodeType : CompositeNodeType
+    public class SpringCompositeNodeType : CompositeNodeType
     {
         public SpringCompositeNodeType(string s, int index) : base(s, index)
         {

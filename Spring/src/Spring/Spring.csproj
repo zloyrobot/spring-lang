@@ -12,9 +12,5 @@
     <PackageReference Include="System.ValueTuple" Version="$(ValueTupleVersion)" />
     <PackageReference Include="NUnit.Console" Version="3.10.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="src\Pascal" />
-  </ItemGroup>
   <Import Project="$(DotNetSdkPath)\Build\SubplatformReference.Psi.Features_test_Framework.Props" Condition="Exists('$(DotNetSdkPath)\Build\SubplatformReference.Psi.Features_test_Framework.Props')" />
 </Project>

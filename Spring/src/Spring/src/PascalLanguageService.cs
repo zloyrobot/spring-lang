@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp.Parsing;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Modules;
@@ -46,7 +45,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override bool SupportTypeMemberCache => false;
         public override ITypePresenter TypePresenter => CLRTypePresenter.Instance;
 
-        internal class SpringLexerFactory : ILexerFactory
+        public class SpringLexerFactory : ILexerFactory
         {
             public ILexer CreateLexer(IBuffer buffer)
             {

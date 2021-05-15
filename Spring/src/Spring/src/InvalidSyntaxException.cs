@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace JetBrains.ReSharper.Plugins.Spring
 {
     [Serializable]
-    internal class InvalidSyntaxException : Exception
+    public class InvalidSyntaxException : Exception
     {
         public InvalidSyntaxException()
         {

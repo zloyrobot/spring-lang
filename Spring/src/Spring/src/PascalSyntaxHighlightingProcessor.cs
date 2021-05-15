@@ -6,7 +6,7 @@ using JetBrains.ReSharper.Psi.Parsing;
 namespace JetBrains.ReSharper.Plugins.Spring
 {
     [Language(typeof(SpringLanguage))]
-    internal class SpringSyntaxHighlightingManager : RiderSyntaxHighlightingManager
+    public class SpringSyntaxHighlightingManager : RiderSyntaxHighlightingManager
     {
         public override SyntaxHighlightingProcessor CreateProcessor()
         {

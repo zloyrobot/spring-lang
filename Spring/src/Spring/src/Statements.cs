@@ -2,7 +2,7 @@ using JetBrains.ReSharper.Psi.Parsing;
 
 namespace JetBrains.ReSharper.Plugins.Spring
 {
-    internal class AssignStatementNode : Node
+    public class AssignStatementNode : Node
     {
         private readonly VariableNode _variable;
         private readonly Token _assignToken;
@@ -14,11 +14,11 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
     }
 
-    internal abstract class Node
+    public abstract class Node
     {
     }
 
-    internal class NumNode : Node
+    public class NumNode : Node
     {
         private Token Token { get; set; }
 
@@ -28,7 +28,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
     }
 
-    internal class VariableNode : Node
+    public class VariableNode : Node
     {
         private Token Token { get; }
 
@@ -38,7 +38,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
     }
 
-    internal class UnaryOpNode : Node
+    public class UnaryOpNode : Node
     {
         private Token Op { get; set; }
 
@@ -48,7 +48,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
     }
 
-    internal class BinOpNode : Node
+    public class BinOpNode : Node
     {
         private Token Op { get; set; }
         // private Node Left { get; set; }

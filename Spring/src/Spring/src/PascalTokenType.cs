@@ -28,6 +28,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringTokenType Dot = new("DOT", 14);
         public static readonly SpringTokenType Semi = new("SEMI", 15);
         public static readonly SpringTokenType BadCharacter = new("BAD_CHARACTER", 16);
+        public static readonly SpringTokenType Str = new("STR", 17);
 
         private string Text;
 
