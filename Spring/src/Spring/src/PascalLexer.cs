@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.Text;
@@ -9,8 +10,15 @@ namespace JetBrains.ReSharper.Plugins.Spring
     {
     }
 
+    // public class SpringLexer : IIncrementalLexer
     public class SpringLexer : ILexer
     {
+        private static string[] _keywords = new[]
+        {
+            "and", "begin", "boolean", "break", "byte", "continue", "div", "do", "double", "else", "end", "false", "if",
+            "integer", "longint", "mod", "not", "or", "repeat", "shl", "shortint", "shr", "single", "then", "true",
+            "until", "while", "word", "xor"
+        };
         public void Start()
         {
             _currentPosition = -1;
@@ -169,10 +177,13 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     else if (_curChar == '(')
                     {
                         CurToken = new SpringToken(SpringTokenType.ProcedureCall, word);
+                    } else if (_keywords.Contains(word.ToLower()))
+                    {
+                        CurToken = new SpringToken(SpringTokenType.ControlSequence, word);
                     }
                     else
                     {
-                        CurToken = new SpringToken(SpringTokenType.Variable, word);
+                        CurToken = new SpringToken(SpringTokenType.Identifier, word);
                     }
 
                     return;
@@ -207,15 +218,18 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         private void Move()
         {
-            if (isEnd) throw new EndOfFileException();
             _currentPosition += 1;
+            if (isEnd)
+            {
+                throw new EndOfFileException();
+            }
 
             _curChar = _currentPosition < Buffer.Length ? Buffer[_currentPosition] : char.MinValue;
         }
 
         private char _curChar;
 
-        public SpringToken CurToken = new(null, "");
+        public SpringToken CurToken = new(SpringTokenType.None, "");
 
         public SpringLexer(IBuffer buffer)
         {
@@ -233,8 +247,29 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public TokenNodeType TokenType => CurToken.GetTokenType();
         public int TokenStart { get; private set; }
 
-        public int TokenEnd => TokenStart + CurToken.GetTextLength();
+        public int TokenEnd
+        {
+            get
+            {
+                if (isEnd)
+                {
+                    return Buffer.Length;
+                }
+                return TokenStart + CurToken.GetTextLength();
+            }
+        }
+
         public IBuffer Buffer { get; }
-        public bool isEnd => Buffer.Length <= _currentPosition - 1;
+        public bool isEnd => _currentPosition >= Buffer.Length;
+        public uint LexerStateEx { get; }
+        public void Start(int startOffset, int endOffset, uint state)
+        {
+            _currentPosition = startOffset;
+            Move();
+            Advance();
+        }
+
+        public int EOFPos { get; }
+        public int LexemIndent { get; }
     }
 }

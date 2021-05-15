@@ -10,24 +10,23 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Parsing;
 using JetBrains.ReSharper.Psi.TreeBuilder;
 using JetBrains.Text;
-using JetBrains.Util;
 using JetBrains.Util.Logging;
 
 namespace JetBrains.ReSharper.Plugins.Spring
 {
     public sealed class TreeBuilder
     {
-        private int myLexemeCount;
-        private readonly ILexer myLexer;
-        public readonly List<Marker> myProduction;
-        private readonly CompositeNodeType myRootType;
-        private readonly IPsiBuilderTokenFactory myTokenFactory;
-        public readonly TokenBuffer myTokenBuffer;
-        public readonly IArrayOfTokens myArrayOfTokens;
-        private int myCurrentLexeme;
-        private TokenNodeType myCurrentTokenType;
-        private int myNonCommentLexeme;
-        private readonly bool myIsLazyCachingLexer;
+        private int _myLexemeCount;
+        private readonly ILexer _myLexer;
+        public readonly List<Marker> MyProduction;
+        private readonly CompositeNodeType _myRootType;
+        private readonly IPsiBuilderTokenFactory _myTokenFactory;
+        private readonly TokenBuffer MyTokenBuffer;
+        private readonly IArrayOfTokens MyArrayOfTokens;
+        private int _myCurrentLexeme;
+        private TokenNodeType _myCurrentTokenType;
+        private int _myNonCommentLexeme;
+        private readonly bool _myIsLazyCachingLexer;
 
         public TreeBuilder(
             ILexer lexer,
@@ -46,43 +45,43 @@ namespace JetBrains.ReSharper.Plugins.Spring
             IPsiBuilderTokenFactory tokenFactory,
             Lifetime lifetime)
         {
-            myLexer = lexer;
-            myRootType = rootType;
-            myTokenFactory = tokenFactory;
-            myCurrentLexeme = myNonCommentLexeme = start;
+            _myLexer = lexer;
+            _myRootType = rootType;
+            _myTokenFactory = tokenFactory;
+            _myCurrentLexeme = _myNonCommentLexeme = start;
             switch (lexer)
             {
                 case CachingLexer cachingLexer:
-                    myTokenBuffer = cachingLexer.TokenBuffer;
+                    MyTokenBuffer = cachingLexer.TokenBuffer;
                     break;
                 case ILazyCachingLexer lazyCachingLexer:
-                    myTokenBuffer = lazyCachingLexer.TokenBuffer;
+                    MyTokenBuffer = lazyCachingLexer.TokenBuffer;
                     if (stop == -1)
                     {
-                        myIsLazyCachingLexer = true;
+                        _myIsLazyCachingLexer = true;
                     }
 
                     break;
                 default:
-                    myTokenBuffer = new TokenBuffer(lexer);
+                    MyTokenBuffer = new TokenBuffer(lexer);
                     break;
             }
 
-            myArrayOfTokens = myTokenBuffer.CachedTokens;
-            if (myArrayOfTokens.Count != 0)
-                Assertion.Assert(myArrayOfTokens[0].Start == 0, "offset of first token is not a zero");
+            MyArrayOfTokens = MyTokenBuffer.CachedTokens;
+            if (MyArrayOfTokens.Count != 0)
+                Assertion.Assert(MyArrayOfTokens[0].Start == 0, "offset of first token is not a zero");
             if (stop == -1)
             {
-                myLexemeCount = myArrayOfTokens.Count;
+                _myLexemeCount = MyArrayOfTokens.Count;
             }
             else
             {
-                Assertion.Assert(stop <= myArrayOfTokens.Count, "stop is greater than myArrayOfTokens.Count");
-                myLexemeCount = stop;
+                Assertion.Assert(stop <= MyArrayOfTokens.Count, "stop is greater than myArrayOfTokens.Count");
+                _myLexemeCount = stop;
             }
 
-            myProduction = new List<Marker>();
-            myCurrentTokenType = myCurrentLexeme < myLexemeCount ? myArrayOfTokens[myCurrentLexeme].Type : null;
+            MyProduction = new List<Marker>();
+            _myCurrentTokenType = _myCurrentLexeme < _myLexemeCount ? MyArrayOfTokens[_myCurrentLexeme].Type : null;
             CheckInvariant();
         }
 
@@ -90,17 +89,17 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
             var interruptChecker = new SeldomInterruptCheckerWithCheckTime(100);
             var curNode = rootNode;
-            var marker1 = myProduction[pRootMarker];
+            var marker1 = MyProduction[pRootMarker];
             var lexemeIndex = marker1.LexemeIndex;
             var index1 = marker1.FirstChild != -1 ? marker1.FirstChild : marker1.OppositeMarker;
             while (true)
             {
-                var marker2 = myProduction[index1];
+                var marker2 = MyProduction[index1];
                 InsertLeaves(ref lexemeIndex, marker2.LexemeIndex, curNode, interruptChecker);
                 if (index1 != marker1.OppositeMarker)
                 {
                     var index2 = marker2.OppositeMarker + index1;
-                    var marker3 = myProduction[index2];
+                    var marker3 = MyProduction[index2];
                     if (marker2.Type == MarkerType.StartMarkerType)
                     {
                         if (marker3.Type == MarkerType.DoneMarkerType)
@@ -130,7 +129,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                         var parentMarker = marker3.ParentMarker;
                         index1 = marker3.NextMarker != -1
                             ? marker3.NextMarker
-                            : myProduction[parentMarker].OppositeMarker + parentMarker;
+                            : MyProduction[parentMarker].OppositeMarker + parentMarker;
                     }
                 }
                 else
@@ -155,20 +154,20 @@ namespace JetBrains.ReSharper.Plugins.Spring
             CompositeElement curNode,
             SeldomInterruptCheckerWithCheckTime interruptChecker)
         {
-            lastIdx = Math.Min(lastIdx, myLexemeCount);
+            lastIdx = Math.Min(lastIdx, _myLexemeCount);
             while (curToken < lastIdx)
             {
                 interruptChecker.CheckForInterrupt();
-                var arrayOfToken = myArrayOfTokens[curToken];
-                curNode.AddChild(CreateToken(arrayOfToken.Type, myLexer.Buffer, arrayOfToken.Start, arrayOfToken.End));
+                var arrayOfToken = MyArrayOfTokens[curToken];
+                curNode.AddChild(CreateToken(arrayOfToken.Type, _myLexer.Buffer, arrayOfToken.Start, arrayOfToken.End));
                 ++curToken;
             }
         }
 
         private void AlterLeaves(ref int curToken, int lastIdx, CompositeElement curNode, Token token)
         {
-            curNode.AddChild(CreateToken(token.Type, myLexer.Buffer, token.Start, token.End));
-            curToken = Math.Min(lastIdx, myLexemeCount);
+            curNode.AddChild(CreateToken(token.Type, _myLexer.Buffer, token.Start, token.End));
+            curToken = Math.Min(lastIdx, _myLexemeCount);
         }
 
         private void AlterLeaves(
@@ -178,8 +177,8 @@ namespace JetBrains.ReSharper.Plugins.Spring
             Token[] tokens)
         {
             foreach (var token in tokens)
-                curNode.AddChild(CreateToken(token.Type, myLexer.Buffer, token.Start, token.End));
-            curToken = Math.Min(lastIdx, myLexemeCount);
+                curNode.AddChild(CreateToken(token.Type, _myLexer.Buffer, token.Start, token.End));
+            curToken = Math.Min(lastIdx, _myLexemeCount);
         }
 
         private LeafElementBase CreateToken(
@@ -188,17 +187,17 @@ namespace JetBrains.ReSharper.Plugins.Spring
             int startOffset,
             int endOffset)
         {
-            return myTokenFactory == null
+            return _myTokenFactory == null
                 ? tokenNodeType.Create(buffer, new TreeOffset(startOffset), new TreeOffset(endOffset))
-                : myTokenFactory.CreateToken(tokenNodeType, buffer, startOffset, endOffset);
+                : _myTokenFactory.CreateToken(tokenNodeType, buffer, startOffset, endOffset);
         }
 
-        private void UpdateMyCurrentTokenType() => myCurrentTokenType =
-            myCurrentLexeme != myLexemeCount ? myArrayOfTokens.GetTokenType(myCurrentLexeme) : null;
+        private void UpdateMyCurrentTokenType() => _myCurrentTokenType =
+            _myCurrentLexeme != _myLexemeCount ? MyArrayOfTokens.GetTokenType(_myCurrentLexeme) : null;
 
         public void PrepareLightTree()
         {
-            if (myProduction.Count == 0)
+            if (MyProduction.Count == 0)
                 return;
             var checkerWithCheckTime = new SeldomInterruptCheckerWithCheckTime(200);
             var node = 0;
@@ -206,10 +205,10 @@ namespace JetBrains.ReSharper.Plugins.Spring
             intStack.Push(node);
             var num1 = 0;
             var num2 = 0;
-            for (var index = 1; index < myProduction.Count; ++index)
+            for (var index = 1; index < MyProduction.Count; ++index)
             {
                 checkerWithCheckTime.CheckForInterrupt();
-                var marker = myProduction[index];
+                var marker = MyProduction[index];
                 if (node == -1)
                     Logger.LogError("Unexpected end of the production");
                 marker.ParentMarker = node;
@@ -236,7 +235,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                         break;
                 }
 
-                myProduction[index] = marker;
+                MyProduction[index] = marker;
             }
 
             if (node == 0)
@@ -248,12 +247,12 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
             PrepareLightTree();
             CompositeNodeType compositeNodeType = null;
-            if (myProduction.Count != 0)
-                compositeNodeType = myProduction[0].ElementType as CompositeNodeType;
+            if (MyProduction.Count != 0)
+                compositeNodeType = MyProduction[0].ElementType as CompositeNodeType;
             var rootNode = compositeNodeType != null
-                ? CreateCompositeElement(myProduction[0])
-                : myRootType.Create();
-            if (myProduction.Count != 0)
+                ? CreateCompositeElement(MyProduction[0])
+                : _myRootType.Create();
+            if (MyProduction.Count != 0)
                 Bind(0, rootNode);
             return rootNode;
         }
@@ -261,11 +260,11 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public int Mark()
         {
             CheckInvariant();
-            var marker = new Marker(MarkerType.StartMarkerType, myCurrentLexeme);
-            myNonCommentLexeme = myCurrentLexeme;
-            myProduction.Add(marker);
+            var marker = new Marker(MarkerType.StartMarkerType, _myCurrentLexeme);
+            _myNonCommentLexeme = _myCurrentLexeme;
+            MyProduction.Add(marker);
             CheckInvariant();
-            return myProduction.Count - 1;
+            return MyProduction.Count - 1;
         }
 
         public void Error(int marker, string message) => Done(marker, PsiBuilderErrorElement.NODE_TYPE, message);
@@ -281,62 +280,62 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         private void DoneImpl(int marker, [CanBeNull] NodeType type, MarkerType doneMarkerType, object userData)
         {
-            if (marker >= myProduction.Count)
-                Assertion.Fail("marker is past the end of sequence " + marker + " of " + myProduction.Count);
+            if (marker >= MyProduction.Count)
+                Assertion.Fail("marker is past the end of sequence " + marker + " of " + MyProduction.Count);
             CheckInvariant();
-            DoValidityChecks(marker + 1, myProduction.Count);
-            var marker1 = new Marker(doneMarkerType, myCurrentLexeme) {ElementType = type, UserData = userData};
-            var marker2 = myProduction[marker];
+            DoValidityChecks(marker + 1, MyProduction.Count);
+            var marker1 = new Marker(doneMarkerType, _myCurrentLexeme) {ElementType = type, UserData = userData};
+            var marker2 = MyProduction[marker];
             if (marker2.OppositeMarker != -1)
                 Logger.LogError("Marker already done");
-            marker2.OppositeMarker = myProduction.Count - marker;
-            if (marker2.LexemeIndex > myCurrentLexeme)
+            marker2.OppositeMarker = MyProduction.Count - marker;
+            if (marker2.LexemeIndex > _myCurrentLexeme)
                 marker1.LexemeIndex = marker2.LexemeIndex;
             marker2.ElementType = type;
             marker2.UserData = userData;
-            myProduction[marker] = marker2;
+            MyProduction[marker] = marker2;
             marker1.OppositeMarker = -marker2.OppositeMarker;
-            myProduction.Add(marker1);
-            myNonCommentLexeme = myCurrentLexeme;
+            MyProduction.Add(marker1);
+            _myNonCommentLexeme = _myCurrentLexeme;
             CheckInvariant();
         }
 
         public TokenNodeType AdvanceLexer()
         {
-            Assertion.Assert(myCurrentLexeme != myLexemeCount, "cannot step past the end");
+            Assertion.Assert(_myCurrentLexeme != _myLexemeCount, "cannot step past the end");
             CheckInvariant();
-            var currentTokenType = myCurrentTokenType;
-            ++myCurrentLexeme;
-            if (myIsLazyCachingLexer && myCurrentLexeme == myLexemeCount)
+            var currentTokenType = _myCurrentTokenType;
+            ++_myCurrentLexeme;
+            if (_myIsLazyCachingLexer && _myCurrentLexeme == _myLexemeCount)
             {
-                while (myLexer.TokenType != null && myLexemeCount == myArrayOfTokens.Count)
-                    myLexer.Advance();
-                myLexemeCount = myArrayOfTokens.Count;
+                while (_myLexer.TokenType != null && _myLexemeCount == MyArrayOfTokens.Count)
+                    _myLexer.Advance();
+                _myLexemeCount = MyArrayOfTokens.Count;
             }
 
             UpdateMyCurrentTokenType();
             if (!currentTokenType.IsComment && !currentTokenType.IsWhitespace)
-                myNonCommentLexeme = myCurrentLexeme;
+                _myNonCommentLexeme = _myCurrentLexeme;
             CheckInvariant();
             return currentTokenType;
         }
-        public TokenNodeType GetTokenType() => myCurrentTokenType;
+        public TokenNodeType GetTokenType() => _myCurrentTokenType;
 
 
-        public Token GetToken() => myArrayOfTokens[myCurrentLexeme];
+        public Token GetToken() => MyArrayOfTokens[_myCurrentLexeme];
 
         [Conditional("JET_MODE_ASSERT")]
         private void CheckInvariant(bool @do = false)
         {
             if (!@do)
                 return;
-            Assertion.Assert(myNonCommentLexeme <= myCurrentLexeme, "non comment lexeme must be before current lexeme");
+            Assertion.Assert(_myNonCommentLexeme <= _myCurrentLexeme, "non comment lexeme must be before current lexeme");
             var num = 0;
-            if (myProduction.Count != 0)
-                num = myProduction[myProduction.Count - 1].LexemeIndex;
+            if (MyProduction.Count != 0)
+                num = MyProduction[MyProduction.Count - 1].LexemeIndex;
             Assertion.Assert(
-                myNonCommentLexeme == num || !myArrayOfTokens[myNonCommentLexeme - 1].Type.IsComment &&
-                !myArrayOfTokens[myNonCommentLexeme - 1].Type.IsWhitespace, "wrong non comment lexeme");
+                _myNonCommentLexeme == num || !MyArrayOfTokens[_myNonCommentLexeme - 1].Type.IsComment &&
+                !MyArrayOfTokens[_myNonCommentLexeme - 1].Type.IsWhitespace, "wrong non comment lexeme");
         }
 
         [Conditional("JET_MODE_ASSERT")]

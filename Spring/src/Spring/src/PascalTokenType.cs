@@ -19,7 +19,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringTokenType Minus = new("MINUS", 6);
         public static readonly SpringTokenType Multiply = new("DIVIDE", 17);
         public static readonly SpringTokenType Divide = new("DIVIDE", 7);
-        public static readonly SpringTokenType Variable = new("VARIABLE", 8);
+        public static readonly SpringTokenType ControlSequence = new("CONTROL_SEQUENCE", 8);
         public static readonly SpringTokenType LeftParenthesis = new("LEFT_PARENTHESIS", 9);
         public static readonly SpringTokenType RightParenthesis = new("RIGHT_PARENTHESIS", 10);
         public static readonly SpringTokenType Assignment = new("ASSIGNMENT", 11);
@@ -32,11 +32,8 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringTokenType Whitespace = new("Whitespace", 18);
         public static readonly SpringTokenType ProcedureCall = new("ProcedureCall", 19);
 
-        private string Text;
-
         public SpringTokenType(string s, int index) : base(s, index)
         {
-            Text = s;
         }
 
         public override LeafElementBase Create(IBuffer buffer, TreeOffset startOffset, TreeOffset endOffset)
@@ -50,14 +47,9 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override bool IsConstantLiteral => this == NUMBER;
         public override bool IsIdentifier => this == Identifier;
 
-        public override bool IsKeyword => new[]
-        {
-            "and", "begin", "boolean", "break", "byte", "continue", "div", "do", "double", "else", "end", "false", "if",
-            "integer", "longint", "mod", "not", "or", "repeat", "shl", "shortint", "shr", "single", "then", "true",
-            "until", "while", "word", "xor"
-        }.Contains(TokenRepresentation);
+        public override bool IsKeyword => this == Begin || this == End || this == ControlSequence;
 
-        public override string TokenRepresentation => Text;
+        public override string TokenRepresentation => ToString();
     }
 
     public class SpringToken : LeafElementBase, ITokenNode

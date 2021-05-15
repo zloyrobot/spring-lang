@@ -31,7 +31,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         public static void AddChild(TreeBuilder builder, int node, int child)
         {
-            var marker1 = builder.myProduction[node];
+            var marker1 = builder.MyProduction[node];
             if (marker1.FirstChild == -1)
             {
                 marker1.FirstChild = child;
@@ -39,12 +39,12 @@ namespace JetBrains.ReSharper.Plugins.Spring
             }
             else
             {
-                var marker2 = builder.myProduction[marker1.LastChild];
+                var marker2 = builder.MyProduction[marker1.LastChild];
                 marker2.NextMarker = child;
-                builder.myProduction[marker1.LastChild] = marker2;
+                builder.MyProduction[marker1.LastChild] = marker2;
                 marker1.LastChild = child;
             }
-            builder.myProduction[node] = marker1;
+            builder.MyProduction[node] = marker1;
         }
     }
 }
