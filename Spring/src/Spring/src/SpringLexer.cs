@@ -53,7 +53,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                         Move();
                     }
 
-                    CurToken = new SpringToken(SpringTokenType.Str, str.ToString());
+                    CurToken = new SpringToken(SpringTokenType.STRING, str.ToString());
                     Move();
                     return;
                 case '+':
@@ -119,12 +119,12 @@ namespace JetBrains.ReSharper.Plugins.Spring
                         }
                         else
                         {
-                            CurToken = new SpringToken(SpringTokenType.BadCharacter, _curChar.ToString());
+                            CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
                             return;
                         }
                     }
 
-                    CurToken = new SpringToken(SpringTokenType.Number, num);
+                    CurToken = new SpringToken(SpringTokenType.NUMBER, num);
                     return;
                 }
                 case >= 'a' and <= 'z':
@@ -180,7 +180,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     }
                     else
                     {
-                        CurToken = new SpringToken(SpringTokenType.BadCharacter, _curChar.ToString());
+                        CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
                         Move();
                         throw new Exception("Unexpected token");
                     }
@@ -189,7 +189,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     return;
             }
 
-            CurToken = new SpringToken(SpringTokenType.BadCharacter, _curChar.ToString());
+            CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
             Move();
             throw new Exception($"Unexpected token: {_curChar}");
         }

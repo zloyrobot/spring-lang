@@ -157,7 +157,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             {
                 ParseVariable(builder);
             }
-            ExpectToken(builder, SpringTokenType.Number);
+            ExpectToken(builder, SpringTokenType.NUMBER);
             builder.AdvanceLexer();
             builder.Done(start, SpringFileNodeType.Num, new NumNode(builder.GetToken()));
         }

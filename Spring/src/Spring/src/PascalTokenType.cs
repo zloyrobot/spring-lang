@@ -11,7 +11,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
     class SpringTokenType : TokenNodeType
     {
         public static readonly SpringTokenType None = new("NONE", 0);
-        public static readonly SpringTokenType Number = new("NUMBER", 1);
+        public static readonly SpringTokenType NUMBER = new("NUMBER", 1);
         public static readonly SpringTokenType String = new("STRING", 2);
         public static readonly SpringTokenType Comment = new("COMMENT", 3);
         public static readonly SpringTokenType Identifier = new("IDENTIFIER", 4);
@@ -27,8 +27,9 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringTokenType Begin = new("BEGIN", 13);
         public static readonly SpringTokenType Dot = new("DOT", 14);
         public static readonly SpringTokenType Semi = new("SEMI", 15);
-        public static readonly SpringTokenType BadCharacter = new("BAD_CHARACTER", 16);
-        public static readonly SpringTokenType Str = new("STR", 17);
+        public static readonly SpringTokenType BAD_CHARACTER = new("BAD_CHARACTER", 16);
+        public static readonly SpringTokenType STRING = new("STR", 17);
+        public static readonly SpringTokenType EQ = new("EQ", 178);
 
         private string Text;
 
@@ -45,7 +46,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override bool IsWhitespace => false;
         public override bool IsComment => this == Comment;
         public override bool IsStringLiteral => this == String;
-        public override bool IsConstantLiteral => this == Number;
+        public override bool IsConstantLiteral => this == NUMBER;
         public override bool IsIdentifier => this == Identifier;
 
         public override bool IsKeyword => new[]
