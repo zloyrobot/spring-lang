@@ -22,7 +22,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
             using var def = Lifetime.Define();
             var builder = new TreeBuilder(_myLexer, SpringFileNodeType.Instance, new TokenFactory(), def.Lifetime);
             var fileMark = builder.Mark();
-            _myLexer.Start();
             ParseCompoundStatement(builder);
 
             builder.Done(fileMark, SpringFileNodeType.Instance, null);
@@ -31,21 +30,30 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
         private static void ExpectToken(TreeBuilder builder, SpringTokenType tokenType)
         {
-            var tt = builder.GetTokenType();
+            var tt = getTokenType(builder);
             if (tt != tokenType)
                 builder.Error($"Invalid syntax. Expected {tokenType} but {tt} is given.");
         }
 
-        private void ParseCompoundStatement(TreeBuilder builder)
+        private static TokenNodeType getTokenType(TreeBuilder builder)
         {
             var tt = builder.GetTokenType();
+            if (!tt.IsWhitespace) return tt;
+            builder.AdvanceLexer();
+            tt = builder.GetTokenType();
+            return tt;
+        }
+
+        private void ParseCompoundStatement(TreeBuilder builder)
+        {
+            var tt = getTokenType(builder);
             if (tt == SpringTokenType.Begin)
             {
                 var start = builder.Mark();
                 builder.AdvanceLexer();
                 ParseStatementList(builder);
 
-                if (builder.GetTokenType() != SpringTokenType.End)
+                if (getTokenType(builder) != SpringTokenType.End)
                     builder.Error("Expected 'END'");
                 else
                     builder.AdvanceLexer();
@@ -59,14 +67,14 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         private void ParseStatementList(TreeBuilder builder)
         {
-            var tt = builder.GetTokenType();
+            var tt = getTokenType(builder);
             ParseStatement(builder);
 
             while (tt == SpringTokenType.Semi)
             {
                 builder.AdvanceLexer();
                 ParseStatement(builder);
-                tt = builder.GetTokenType();
+                tt = getTokenType(builder);
             }
 
             builder.AdvanceLexer();
@@ -74,15 +82,23 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         private void ParseStatement(TreeBuilder builder)
         {
-            var tt = builder.GetTokenType();
+            var tt = getTokenType(builder);
             if (tt == SpringTokenType.Begin)
             {
                 ParseCompoundStatement(builder);
+            } else if (tt == SpringTokenType.ProcedureCall)
+            {
+                ParseProcedureCall(builder);
             }
             else if (tt == SpringTokenType.Variable)
             {
                 ParseAssignStatement(builder);
             }
+        }
+
+        private void ParseProcedureCall(TreeBuilder builder)
+        {
+            
         }
 
         private void ParseAssignStatement(TreeBuilder builder)
@@ -105,7 +121,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             ParseTerm(builder);
             BinOpNode left = null;
 
-            var tt = builder.GetTokenType();
+            var tt = getTokenType(builder);
 
             while (tt == SpringTokenType.Plus
                    || tt == SpringTokenType.Minus)
@@ -122,7 +138,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
             var start = builder.Mark();
             ParseFactor(builder);
-            var tt = builder.GetTokenType();
+            var tt = getTokenType(builder);
             BinOpNode left = null;
 
             while (tt == SpringTokenType.Multiply
@@ -140,7 +156,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
             var start = builder.Mark();
 
-            var tt = builder.GetTokenType();
+            var tt = getTokenType(builder);
 
             if (tt == SpringTokenType.Plus
                 || tt == SpringTokenType.Minus)
@@ -172,7 +188,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         private void ParseUnaryExpr(TreeBuilder builder)
         {
             var start = builder.Mark();
-            var tt = builder.GetTokenType();
+            var tt = getTokenType(builder);
 
 
             if (tt == SpringTokenType.Plus

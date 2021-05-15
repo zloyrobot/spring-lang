@@ -9,16 +9,9 @@ namespace JetBrains.ReSharper.Plugins.Spring
     {
         public void Start()
         {
-            TokenStart = 0;
+            _currentPosition = -1;
+            Move();
             Advance();
-        }
-
-        private void SkipWhitespaces()
-        {
-            while (_curChar != char.MinValue && char.IsWhiteSpace(_curChar))
-            {
-                Move();
-            }
         }
 
         public void Advance()
@@ -35,17 +28,27 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         private void EatToken()
         {
-            SkipWhitespaces();
-            if (_curChar == char.MinValue)
+            TokenStart = _currentPosition;
+
+            if (char.IsWhiteSpace(_curChar))
             {
+                var builder = new StringBuilder();
+                builder.Append(_curChar);
                 Move();
+                while (char.IsWhiteSpace(_curChar))
+                {
+                    builder.Append(_curChar);
+                    Move();
+                }
+
+                CurToken = new SpringToken(SpringTokenType.Whitespace, builder.ToString());
                 return;
             }
 
             switch (_curChar)
             {
                 case '\'':
-                    var str = new StringBuilder();
+                    var str = new StringBuilder("'");
                     Move();
                     while (_curChar != '\'')
                     {
@@ -53,7 +56,9 @@ namespace JetBrains.ReSharper.Plugins.Spring
                         Move();
                     }
 
-                    CurToken = new SpringToken(SpringTokenType.STRING, str.ToString());
+                    str.Append("'");
+
+                    CurToken = new SpringToken(SpringTokenType.String, str.ToString());
                     Move();
                     return;
                 case '+':
@@ -72,7 +77,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     Move();
                     if (_curChar == '/')
                     {
-                        var comment = new StringBuilder();
+                        var comment = new StringBuilder("//");
                         Move();
                         while (_curChar != '\r' && _curChar != '\n')
                         {
@@ -85,7 +90,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     }
 
                     CurToken = new SpringToken(SpringTokenType.Divide, "/");
-                    
+
                     return;
                 case '(':
                     CurToken = new SpringToken(SpringTokenType.LeftParenthesis, _curChar.ToString());
@@ -157,6 +162,10 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     {
                         CurToken = new SpringToken(SpringTokenType.End, word);
                     }
+                    else if (_curChar == '(')
+                    {
+                        CurToken = new SpringToken(SpringTokenType.ProcedureCall, word);
+                    }
                     else
                     {
                         CurToken = new SpringToken(SpringTokenType.Variable, word);
@@ -197,9 +206,9 @@ namespace JetBrains.ReSharper.Plugins.Spring
         private void Move()
         {
             if (isEnd) throw new Exception("Ended");
-            TokenStart += 1;
+            _currentPosition += 1;
 
-            _curChar = TokenStart < Buffer.Length ? Buffer[TokenStart] : char.MinValue;
+            _curChar = _currentPosition < Buffer.Length ? Buffer[_currentPosition] : char.MinValue;
         }
 
         private char _curChar;
@@ -213,15 +222,17 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         public object CurrentPosition
         {
-            get => TokenStart;
-            set => TokenStart = (int) value;
+            get => _currentPosition;
+            set => _currentPosition = (int) value;
         }
+
+        private int _currentPosition;
 
         public TokenNodeType TokenType => CurToken.GetTokenType();
         public int TokenStart { get; private set; }
 
         public int TokenEnd => TokenStart + CurToken.GetTextLength();
         public IBuffer Buffer { get; }
-        public bool isEnd => Buffer.Length <= TokenStart - 1;
+        public bool isEnd => Buffer.Length <= _currentPosition - 1;
     }
 }

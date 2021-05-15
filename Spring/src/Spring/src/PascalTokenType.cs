@@ -28,8 +28,9 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringTokenType Dot = new("DOT", 14);
         public static readonly SpringTokenType Semi = new("SEMI", 15);
         public static readonly SpringTokenType BAD_CHARACTER = new("BAD_CHARACTER", 16);
-        public static readonly SpringTokenType STRING = new("STR", 17);
-        public static readonly SpringTokenType EQ = new("EQ", 178);
+        public static readonly SpringTokenType EQ = new("EQ", 17);
+        public static readonly SpringTokenType Whitespace = new("Whitespace", 18);
+        public static readonly SpringTokenType ProcedureCall = new("ProcedureCall", 19);
 
         private string Text;
 
@@ -43,7 +44,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             return new SpringToken(this, buffer.GetText(new TextRange(startOffset.Offset, endOffset.Offset)));
         }
 
-        public override bool IsWhitespace => false;
+        public override bool IsWhitespace => this == Whitespace;
         public override bool IsComment => this == Comment;
         public override bool IsStringLiteral => this == String;
         public override bool IsConstantLiteral => this == NUMBER;
@@ -95,6 +96,22 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public TokenNodeType GetTokenType()
         {
             return (TokenNodeType) NodeType;
+        }
+
+        public override bool Equals(object obj)
+        {
+            var nt = obj as SpringToken;
+            if (nt == null)
+            {
+                return false;
+            }
+
+            return GetTokenType() == nt.GetTokenType() && GetText().Equals(nt.GetText());
+        }
+
+        public override string ToString()
+        {
+            return GetText();
         }
     }
 }
