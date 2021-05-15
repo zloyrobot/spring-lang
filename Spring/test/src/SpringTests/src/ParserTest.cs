@@ -16,12 +16,5 @@ namespace JetBrains.ReSharper.Plugins.SpringTests
         {
             DoOneTest(filename);
         }
-        
-        [TestCase("test01")]
-        [Test]
-        public void Test2(string filename)
-        {
-            var parser = new SpringParser(new SpringLexer(null));
-        }
     }
 }
