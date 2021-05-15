@@ -31,8 +31,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         public override IParser CreateParser(ILexer lexer, IPsiModule module, IPsiSourceFile sourceFile)
         {
-            // return new SpringParser("");
-            return null;
+            return new SpringParser(lexer);
         }
 
         public override IEnumerable<ITypeDeclaration> FindTypeDeclarations(IFile file)

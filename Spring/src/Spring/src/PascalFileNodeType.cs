@@ -10,8 +10,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
 
         public static readonly SpringFileNodeType Instance = new("File", 0);
-        public static readonly SpringFileNodeType Variable = new("Variable", 1);
-        public static readonly SpringFileNodeType Num = new("Num", 2);
+        public static readonly SpringFileNodeType Literal = new("Literal", 1);
 
         public override CompositeElement Create()
         {

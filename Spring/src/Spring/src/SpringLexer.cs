@@ -5,6 +5,10 @@ using JetBrains.Text;
 
 namespace JetBrains.ReSharper.Plugins.Spring
 {
+    class EndOfFileException : Exception
+    {
+    }
+
     public class SpringLexer : ILexer
     {
         public void Start()
@@ -20,7 +24,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             {
                 EatToken();
             }
-            catch (Exception)
+            catch (EndOfFileException)
             {
                 CurToken = new SpringToken(null, "");
             }
@@ -191,7 +195,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     {
                         CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
                         Move();
-                        throw new Exception("Unexpected token");
                     }
 
                     Move();
@@ -200,12 +203,11 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
             CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
             Move();
-            throw new Exception($"Unexpected token: {_curChar}");
         }
 
         private void Move()
         {
-            if (isEnd) throw new Exception("Ended");
+            if (isEnd) throw new EndOfFileException();
             _currentPosition += 1;
 
             _curChar = _currentPosition < Buffer.Length ? Buffer[_currentPosition] : char.MinValue;
