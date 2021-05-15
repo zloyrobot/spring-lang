@@ -39,6 +39,10 @@ namespace JetBrains.ReSharper.Plugins.Spring
         private static TokenNodeType getTokenType(PsiBuilder builder)
         {
             var tt = builder.GetTokenType();
+            if (tt == null)
+            {
+                return null;
+            }
             if (!tt.IsWhitespace) return tt;
             builder.AdvanceLexer();
             tt = builder.GetTokenType();
@@ -64,7 +68,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             else if (tt == SpringTokenType.End)
                 return;
 
-            // else builder.AdvanceLexer();
+            else builder.AdvanceLexer();
         }
 
         private void ParseStatementList(PsiBuilder builder)
@@ -105,7 +109,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         private void ParseAssignStatement(PsiBuilder builder)
         {
-            // var varToken = EatToken(SpringTokenType.Variable);
             var start = builder.Mark();
             var varToken = builder.GetToken();
             builder.AdvanceLexer();
@@ -127,7 +130,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
             if (tt == SpringTokenType.String)
             {
                 var st = builder.Mark();
-                builder.Done(st, SpringFileNodeType.Literal, new VariableNode(builder.GetToken()));
+                builder.Done(st, SpringLiteralType.Literal, new VariableNode(builder.GetToken()));
                 builder.Done(start, SpringCompositeNodeType.Expression, null);
                 return;
             }
@@ -183,15 +186,13 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 ParseVariable(builder);
             }
 
-            // ExpectToken(builder, SpringTokenType.NUMBER);
-            // builder.AdvanceLexer();
-            builder.Done(start, SpringFileNodeType.Literal, new NumNode(builder.GetToken()));
+            builder.Done(start, SpringLiteralType.Literal, new NumNode(builder.GetToken()));
         }
 
         private void ParseVariable(PsiBuilder builder)
         {
             var start = builder.Mark();
-            builder.Done(start, SpringFileNodeType.Literal, new VariableNode(builder.GetToken()));
+            builder.Done(start, SpringLiteralType.Literal, new VariableNode(builder.GetToken()));
             builder.AdvanceLexer();
         }
 

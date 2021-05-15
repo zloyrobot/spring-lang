@@ -33,6 +33,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
         }
 
-        public const string Spring_EXTENSION = ".pas";
+        public const string Spring_EXTENSION = ".Spring";
     }
 }

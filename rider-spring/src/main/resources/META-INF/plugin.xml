@@ -9,7 +9,7 @@
 
   <depends>com.intellij.modules.rider</depends>
   <extensions defaultExtensionNs="com.intellij">
-    <fileType name="Spring" language="Spring" extensions="pas" implementationClass="com.jetbrains.rider.ideaInterop.fileTypes.spring.SpringFileType" />
+    <fileType name="Spring" language="Spring" extensions="spring" implementationClass="com.jetbrains.rider.ideaInterop.fileTypes.spring.SpringFileType" />
     <lang.ast.factory language="Spring" implementationClass="com.jetbrains.rider.ideaInterop.fileTypes.spring.SpringAstFactory" />
     <lang.parserDefinition language="Spring" implementationClass="com.jetbrains.rider.ideaInterop.fileTypes.spring.SpringParserDefinition" />
 

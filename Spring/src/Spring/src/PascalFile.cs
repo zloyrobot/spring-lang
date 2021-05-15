@@ -5,7 +5,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
 {
     public class SpringFile : FileElementBase
     {
-        public override NodeType NodeType => SpringCompositeNodeType.Instance;
+        public override NodeType NodeType => SpringFileNodeType.Instance;
 
         public override PsiLanguageType Language => SpringLanguage.Instance;
     }
@@ -31,6 +31,13 @@ namespace JetBrains.ReSharper.Plugins.Spring
     public class BinOp : CompositeElement
     {
         public override NodeType NodeType => SpringCompositeNodeType.BinOp;
+
+        public override PsiLanguageType Language => SpringLanguage.Instance;
+    }
+    
+    public class Expression : CompositeElement
+    {
+        public override NodeType NodeType => SpringCompositeNodeType.Expression;
 
         public override PsiLanguageType Language => SpringLanguage.Instance;
     }

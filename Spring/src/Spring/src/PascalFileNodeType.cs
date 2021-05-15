@@ -10,12 +10,20 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
 
         public static readonly SpringFileNodeType Instance = new("File", 0);
-        public static readonly SpringFileNodeType Literal = new("Literal", 1);
 
         public override CompositeElement Create()
         {
             return new SpringFile();
         }
+    }
+
+    public class SpringLiteralType : NodeType
+    {
+        public static readonly SpringLiteralType Literal = new("Literal", 0);
+        public SpringLiteralType(string s, int index) : base(s, index)
+        {
+        }
+        
     }
 
     public class SpringCompositeNodeType : CompositeNodeType
@@ -29,7 +37,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringCompositeNodeType UnaryOp = new("UnaryOp", 2);
         public static readonly SpringCompositeNodeType BinOp = new("BinOp", 3);
         public static readonly SpringCompositeNodeType Expression = new("Expression", 4);
-        public static readonly SpringCompositeNodeType Instance = new("Instance", 5);
 
         public override CompositeElement Create()
         {
@@ -41,6 +48,8 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 return new UnaryOp();
             if (this == BinOp)
                 return new BinOp();
+            if (this == Expression)
+                return new Expression();
 
             throw new InvalidOperationException();
         }

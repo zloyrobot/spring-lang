@@ -22,6 +22,15 @@ end";
             var parser = new SpringParser(new SpringLexer(new StringBuffer(file)));
             var tree = parser.ParseFile();
         }
+        
+        [TestCase(@"begin
+end")]
+        [Test]
+        public void TestSimplestProgram(string file)
+        {
+            var parser = new SpringParser(new SpringLexer(new StringBuffer(file)));
+            var tree = parser.ParseFile();
+        }
 
         [TestCase(program1)]
         [Test]
