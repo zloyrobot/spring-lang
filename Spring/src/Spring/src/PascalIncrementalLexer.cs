@@ -6,15 +6,14 @@ using JetBrains.Text;
 
 namespace JetBrains.ReSharper.Plugins.Spring
 {
-    public class SpringLexer : ILexer
+    public class SpringIncrementalLexer : IIncrementalLexer
+    // public class SpringLexer : ILexer
     {
-        private static readonly string[] Keywords =
-        {
+        private static string[] _keywords = {
             "and", "begin", "boolean", "break", "byte", "continue", "div", "do", "double", "else", "end", "false", "if",
             "integer", "longint", "mod", "not", "or", "repeat", "shl", "shortint", "shr", "single", "then", "true",
             "until", "while", "word", "xor"
         };
-
         public void Start()
         {
             _currentPosition = -1;
@@ -24,13 +23,13 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         public void Advance()
         {
-            if (_curChar == char.MinValue)
-            {
-                CurToken = new SpringToken(null, "");
-            }
-            else
+            try
             {
                 EatToken();
+            }
+            catch (EndOfFileException)
+            {
+                CurToken = new SpringToken(null, "");
             }
         }
 
@@ -58,7 +57,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 case '\'':
                     var str = new StringBuilder("'");
                     Move();
-                    while (_curChar != '\'' && _curChar != char.MinValue)
+                    while (_curChar != '\'')
                     {
                         str.Append(_curChar);
                         Move();
@@ -87,18 +86,17 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     {
                         var comment = new StringBuilder("//");
                         Move();
-                        while (!new []{'\n', '\r', char.MinValue}.Contains(_curChar))
+                        while (_curChar != '\r' && _curChar != '\n')
                         {
                             comment.Append(_curChar);
                             Move();
                         }
 
                         CurToken = new SpringToken(SpringTokenType.Comment, comment.ToString());
+                        return;
                     }
-                    else
-                    {
-                        CurToken = new SpringToken(SpringTokenType.Divide, "/");
-                    }
+
+                    CurToken = new SpringToken(SpringTokenType.Divide, "/");
 
                     return;
                 case '(':
@@ -133,7 +131,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                         }
                         else
                         {
-                            CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, num);
+                            CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
                             return;
                         }
                     }
@@ -174,8 +172,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     else if (_curChar == '(')
                     {
                         CurToken = new SpringToken(SpringTokenType.ProcedureCall, word);
-                    }
-                    else if (Keywords.Contains(word.ToLower()))
+                    } else if (_keywords.Contains(word.ToLower()))
                     {
                         CurToken = new SpringToken(SpringTokenType.ControlSequence, word);
                     }
@@ -199,13 +196,14 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     if (_curChar == '=')
                     {
                         CurToken = new SpringToken(SpringTokenType.Assignment, ":=");
-                        Move();
                     }
                     else
                     {
-                        CurToken = new SpringToken(SpringTokenType.Colon, ":");
+                        CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
+                        Move();
                     }
 
+                    Move();
                     return;
             }
 
@@ -216,14 +214,19 @@ namespace JetBrains.ReSharper.Plugins.Spring
         private void Move()
         {
             _currentPosition += 1;
-            _curChar = IsEnd ? char.MinValue : Buffer[_currentPosition];
+            if (isEnd)
+            {
+                throw new EndOfFileException();
+            }
+
+            _curChar = _currentPosition < Buffer.Length ? Buffer[_currentPosition] : char.MinValue;
         }
 
         private char _curChar;
 
         public SpringToken CurToken = new(SpringTokenType.None, "");
 
-        public SpringLexer(IBuffer buffer)
+        public SpringIncrementalLexer(IBuffer buffer)
         {
             Buffer = buffer;
         }
@@ -243,16 +246,24 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
             get
             {
-                if (IsEnd)
+                if (isEnd)
                 {
                     return Buffer.Length;
                 }
-
                 return TokenStart + CurToken.GetTextLength();
             }
         }
 
         public IBuffer Buffer { get; }
-        public bool IsEnd => _currentPosition >= Buffer.Length;
+        public bool isEnd => _currentPosition >= Buffer.Length;
+        public uint LexerStateEx { get; }
+        public void Start(int startOffset, int endOffset, uint state)
+        {
+            _currentPosition = startOffset;
+            Advance();
+        }
+
+        public int EOFPos { get; }
+        public int LexemIndent { get; }
     }
 }

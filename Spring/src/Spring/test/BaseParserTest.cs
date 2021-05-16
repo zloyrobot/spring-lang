@@ -4,22 +4,22 @@ using FluentAssertions;
 using JetBrains.Text;
 using NUnit.Framework;
 
-namespace JetBrains.ReSharper.Plugins.Spring
+namespace JetBrains.ReSharper.Plugins.Spring.test
 {
     [TestFixture]
-    public class ParserTest2
+    public class BaseParserTest
     {
-        private const string program1 = @"
+        private const string Program1 = @"
 begin
   Write(55+  8.9);
   Write('Enter a number:'); // User should enter the number
 end";
 
-        [TestCase(program1)]
+        [TestCase(Program1)]
         [Test]
-        public void Test2(string file)
+        public void Test2(string content)
         {
-            var parser = new SpringParser(new SpringLexer(new StringBuffer(file)));
+            var parser = new SpringParser(new SpringLexer(new StringBuffer(content)));
             var tree = parser.ParseFile();
         }
         
@@ -32,13 +32,13 @@ end")]
             var tree = parser.ParseFile();
         }
 
-        [TestCase(program1)]
+        [TestCase(Program1)]
         [Test]
         public void TestLexer(string file)
         {
             var lexer = new SpringLexer(new StringBuffer(file));
             var actual = new List<SpringToken>();
-            var expected = new List<SpringToken>()
+            var expected = new List<SpringToken>
             {
                 new(SpringTokenType.Whitespace, Environment.NewLine),
                 new(SpringTokenType.Begin, "begin"),
@@ -63,7 +63,7 @@ end")]
                 new(SpringTokenType.End, "end"),
             };
             lexer.Start();
-            while (!lexer.isEnd)
+            while (lexer.TokenType != null)
             {
                 actual.Add(lexer.CurToken);
 

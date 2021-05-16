@@ -268,6 +268,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
         }
 
         public void Error(int marker, string message) => Done(marker, PsiBuilderErrorElement.NODE_TYPE, message);
+        public bool Eof() => this._myCurrentLexeme >= this._myLexemeCount;
 
         public void Error(string message) => Error(Mark(), message);
 
@@ -342,5 +343,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
         private void DoValidityChecks(int first, int last)
         {
         }
+        
     }
 }

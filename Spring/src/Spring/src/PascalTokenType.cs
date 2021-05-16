@@ -17,7 +17,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringTokenType Identifier = new("IDENTIFIER", 4);
         public static readonly SpringTokenType Plus = new("PLUS", 5);
         public static readonly SpringTokenType Minus = new("MINUS", 6);
-        public static readonly SpringTokenType Multiply = new("DIVIDE", 17);
         public static readonly SpringTokenType Divide = new("DIVIDE", 7);
         public static readonly SpringTokenType ControlSequence = new("CONTROL_SEQUENCE", 8);
         public static readonly SpringTokenType LeftParenthesis = new("LEFT_PARENTHESIS", 9);
@@ -31,6 +30,8 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public static readonly SpringTokenType EQ = new("EQ", 17);
         public static readonly SpringTokenType Whitespace = new("Whitespace", 18);
         public static readonly SpringTokenType ProcedureCall = new("ProcedureCall", 19);
+        public static readonly SpringTokenType Multiply = new("DIVIDE", 20);
+        public static readonly SpringTokenType Colon = new("COLON", 21);
 
         public SpringTokenType(string s, int index) : base(s, index)
         {

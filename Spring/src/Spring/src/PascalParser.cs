@@ -55,16 +55,21 @@ namespace JetBrains.ReSharper.Plugins.Spring
             var tt = GetTokenType(builder);
             if (tt == SpringTokenType.Begin)
             {
-                var start = builder.Mark();
+                // var start = builder.Mark();
                 builder.TryAdvance();
-                ParseStatementList(builder);
-
+                // ParseStatementList(builder);
+                //
+                // if (GetTokenType(builder) != SpringTokenType.End)
+                //     builder.Error("Expected 'END'");
+                // else
+                //     builder.TryAdvance();
+                //
+                // builder.Done(start, SpringCompositeNodeType.CompoundStatement, null);
                 if (GetTokenType(builder) != SpringTokenType.End)
-                    builder.Error("Expected 'END'");
-                else
-                    builder.TryAdvance();
-
-                builder.Done(start, SpringCompositeNodeType.CompoundStatement, null);
+                {
+                    builder.Error("fuck you");
+                }
+                
             }
             else if (tt == SpringTokenType.End)
                 return;
@@ -151,6 +156,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 left = new BinOpNode(builder.TryGetToken());
                 builder.TryAdvance();
                 ParseTerm(builder);
+                tt = GetTokenType(builder);
             }
 
             builder.Done(start, SpringCompositeNodeType.Expression, left);
