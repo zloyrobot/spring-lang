@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="JetBrains.Rider.SDK" Version="$(RiderSDKVersion)" />
+    <PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Win32.SystemEvents" Version="4.5.0" />
     <PackageReference Include="System.ValueTuple" Version="$(ValueTupleVersion)" />
     <PackageReference Include="NUnit.Console" Version="3.10.0" />
   </ItemGroup>

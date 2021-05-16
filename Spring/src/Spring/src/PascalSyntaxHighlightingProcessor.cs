@@ -6,7 +6,7 @@ using JetBrains.ReSharper.Psi.Parsing;
 namespace JetBrains.ReSharper.Plugins.Spring
 {
     [Language(typeof(SpringLanguage))]
-    internal class SpringSyntaxHighlightingManager : RiderSyntaxHighlightingManager
+    public class SpringSyntaxHighlightingManager : RiderSyntaxHighlightingManager
     {
         public override SyntaxHighlightingProcessor CreateProcessor()
         {
@@ -19,27 +19,22 @@ namespace JetBrains.ReSharper.Plugins.Spring
     {
         protected override bool IsBlockComment(TokenNodeType tokenType)
         {
-            return base.IsBlockComment(tokenType);
-        }
-
-        protected override bool IsLineComment(TokenNodeType tokenType)
-        {
-            return base.IsLineComment(tokenType);
+            return tokenType.IsComment;
         }
 
         protected override bool IsString(TokenNodeType tokenType)
         {
-            return base.IsString(tokenType);
+            return tokenType.IsStringLiteral;
         }
 
         protected override bool IsNumber(TokenNodeType tokenType)
         {
-            return base.IsNumber(tokenType);
+            return tokenType.IsConstantLiteral;
         }
 
         protected override bool IsKeyword(TokenNodeType tokenType)
         {
-            return base.IsKeyword(tokenType) || tokenType.IsConstantLiteral;
+            return base.IsKeyword(tokenType) || tokenType.IsKeyword;
         }
     }
 }

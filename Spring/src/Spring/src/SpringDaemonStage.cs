@@ -1,19 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using ICSharpCode.NRefactory.CSharp;
 using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
-using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Feature.Services.SelectEmbracingConstruct;
 using JetBrains.ReSharper.I18n.Services.Daemon;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp.Parsing;
-using JetBrains.ReSharper.Psi.ExtensionsAPI;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Tree;
 using JetBrains.ReSharper.Psi.Files;
 using JetBrains.ReSharper.Psi.Parsing;
@@ -23,56 +17,6 @@ using JetBrains.Text;
 
 namespace JetBrains.ReSharper.Plugins.Spring
 {
-    internal class SpringParser : IParser
-    {
-        private readonly ILexer myLexer;
-
-        public SpringParser(ILexer lexer)
-        {
-            myLexer = lexer;
-        }
-
-        public IFile ParseFile()
-        {
-            using (var def = Lifetime.Define())
-            {
-                var builder = new PsiBuilder(myLexer, SpringFileNodeType.Instance, new TokenFactory(), def.Lifetime);
-                var fileMark = builder.Mark();
-
-                ParseBlock(builder);
-
-                builder.Done(fileMark, SpringFileNodeType.Instance, null);
-                var file = (IFile)builder.BuildTree();
-                return file;
-            }
-        }
-
-        private void ParseBlock(PsiBuilder builder)
-        {
-            while (!builder.Eof())
-            {
-                var tt = builder.GetTokenType();
-                if (tt == CSharpTokenType.LBRACE)
-                {
-                    var start = builder.Mark();
-                    builder.AdvanceLexer();
-                    ParseBlock(builder);
-
-                    if (builder.GetTokenType() != CSharpTokenType.RBRACE)
-                        builder.Error("Expected '}'");
-                    else
-                        builder.AdvanceLexer();
-                    
-                    builder.Done(start, SpringCompositeNodeType.BLOCK, null);
-                }
-                else if (tt == CSharpTokenType.RBRACE)
-                    return;
-                else builder.AdvanceLexer();
-                
-            }
-        }
-    }
-
     [DaemonStage]
     class SpringDaemonStage : DaemonStageBase<SpringFile>
     {
@@ -123,7 +67,8 @@ namespace JetBrains.ReSharper.Plugins.Spring
             return tokenNodeType.Create(buffer, new TreeOffset(startOffset), new TreeOffset(endOffset));
         }
     }
-
+    
+    
     [ProjectFileType(typeof (SpringProjectFileType))]
     public class SelectEmbracingConstructProvider : ISelectEmbracingConstructProvider
     {

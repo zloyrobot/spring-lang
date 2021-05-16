@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using JetBrains.ProjectModel;
 
 namespace JetBrains.ReSharper.Plugins.Spring
@@ -6,9 +7,14 @@ namespace JetBrains.ReSharper.Plugins.Spring
     [ProjectFileTypeDefinition(Name)]
     public class SpringProjectFileType : KnownProjectFileType
     {
-        public new const string Name = "Spring";
-
-        public new static SpringProjectFileType Instance { get; private set; }
+        public const string Name = "Spring";
+        public static SpringProjectFileType instance;
+        [CanBeNull]
+        [UsedImplicitly]
+        public new static SpringProjectFileType Instance  {
+            get { return instance ??= new SpringProjectFileType(); }
+            set => instance = value;
+        }
 
         private SpringProjectFileType() : base(Name, "Spring", new[] {Spring_EXTENSION})
         {

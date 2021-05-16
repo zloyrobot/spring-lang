@@ -5,12 +5,12 @@ using NUnit.Framework;
 namespace JetBrains.ReSharper.Plugins.SpringTests
 {
     [TestFixture]
-    [TestFileExtension(".spring")]
+    [TestFileExtension(".Spring")]
     public class ParserTest : ParserTestBase<SpringLanguage>
     {
         protected override string RelativeTestDataPath => "parser";
 
-        [TestCase("test01")]
+        [TestCase("test01WithShell")]
         [Test]
         public void Test1(string filename)
         {

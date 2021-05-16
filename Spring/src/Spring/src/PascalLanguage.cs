@@ -8,7 +8,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
     {
         public new const string Name = "Spring";
     
-        public new static SpringLanguage Instance { get; private set; }
+        public static SpringLanguage Instance { get; private set; }
 
         private SpringLanguage() : base(Name, Name)
         {
