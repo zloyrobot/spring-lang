@@ -131,12 +131,12 @@ namespace JetBrains.ReSharper.Plugins.Spring
                         }
                         else
                         {
-                            CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
+                            CurToken = new SpringToken(SpringTokenType.BadCharacter, _curChar.ToString());
                             return;
                         }
                     }
 
-                    CurToken = new SpringToken(SpringTokenType.NUMBER, num);
+                    CurToken = new SpringToken(SpringTokenType.Number, num);
                     return;
                 }
                 case >= 'a' and <= 'z':
@@ -199,7 +199,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     }
                     else
                     {
-                        CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
+                        CurToken = new SpringToken(SpringTokenType.BadCharacter, _curChar.ToString());
                         Move();
                     }
 
@@ -207,7 +207,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     return;
             }
 
-            CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
+            CurToken = new SpringToken(SpringTokenType.BadCharacter, _curChar.ToString());
             Move();
         }
 

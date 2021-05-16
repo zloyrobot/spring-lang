@@ -32,18 +32,15 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
         }
 
-        public static readonly SpringCompositeNodeType CompoundStatement = new("CompoundStatement", 0);
-        public static readonly SpringCompositeNodeType AssignmentStatement = new("AssignmentStatement", 1);
+        public static readonly SpringCompositeNodeType Statement = new("Statement", 0);
         public static readonly SpringCompositeNodeType UnaryOp = new("UnaryOp", 2);
         public static readonly SpringCompositeNodeType BinOp = new("BinOp", 3);
         public static readonly SpringCompositeNodeType Expression = new("Expression", 4);
 
         public override CompositeElement Create()
         {
-            if (this == CompoundStatement)
+            if (this == Statement)
                 return new CompoundStatement();
-            if (this == AssignmentStatement)
-                return new AssignmentStatement();
             if (this == UnaryOp)
                 return new UnaryOp();
             if (this == BinOp)

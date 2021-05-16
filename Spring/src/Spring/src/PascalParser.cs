@@ -29,11 +29,21 @@ namespace JetBrains.ReSharper.Plugins.Spring
             return file;
         }
 
-        private static void ExpectToken(PsiBuilder builder, SpringTokenType tokenType)
+        private static bool ExpectToken(PsiBuilder builder, SpringTokenType tokenType, int mark = -1)
         {
             var tt = GetTokenType(builder);
-            if (tt != tokenType)
-                builder.Error($"Invalid syntax. Expected {tokenType} but {tt} is given.");
+            if (tt == tokenType) return true;
+            var errorStr = $"Expected {tokenType} but {tt} is given.";
+            if (mark == -1)
+            {
+                builder.Error(errorStr);
+            }
+            else
+            {
+                builder.Error(mark, errorStr);
+            }
+
+            return false;
         }
 
         private static TokenNodeType GetTokenType(PsiBuilder builder)
@@ -44,7 +54,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 return null;
             }
 
-            if (!tt.IsWhitespace) return tt;
+            if (!(builder.GetTokenType() == SpringTokenType.Whitespace || builder.GetTokenType() == SpringTokenType.Comment)) return tt;
             builder.TryAdvance();
             tt = builder.GetTokenType();
             return tt;
@@ -52,29 +62,17 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
         private void ParseCompoundStatement(PsiBuilder builder)
         {
-            var tt = GetTokenType(builder);
-            if (tt == SpringTokenType.Begin)
-            {
-                // var start = builder.Mark();
-                builder.TryAdvance();
-                // ParseStatementList(builder);
-                //
-                // if (GetTokenType(builder) != SpringTokenType.End)
-                //     builder.Error("Expected 'END'");
-                // else
-                //     builder.TryAdvance();
-                //
-                // builder.Done(start, SpringCompositeNodeType.CompoundStatement, null);
-                if (GetTokenType(builder) != SpringTokenType.End)
-                {
-                    builder.Error("fuck you");
-                }
-                
-            }
-            else if (tt == SpringTokenType.End)
-                return;
+            ExpectToken(builder, SpringTokenType.Begin);
+            var start = builder.Mark();
+            builder.TryAdvance();
+            ParseStatementList(builder);
 
-            else builder.TryAdvance();
+            if (ExpectToken(builder, SpringTokenType.End, start))
+            {
+                builder.Done(start, SpringCompositeNodeType.Statement, null);
+            }
+
+            builder.TryAdvance();
         }
 
         private void ParseStatementList(PsiBuilder builder)
@@ -82,14 +80,16 @@ namespace JetBrains.ReSharper.Plugins.Spring
             var tt = GetTokenType(builder);
             ParseStatement(builder);
 
-            while (tt == SpringTokenType.Semi)
+            while (true)
             {
-                builder.TryAdvance();
-                ParseStatement(builder);
                 tt = GetTokenType(builder);
+                if (tt != SpringTokenType.Identifier && tt != SpringTokenType.Begin &&
+                    tt != SpringTokenType.ProcedureCall)
+                {
+                    break;
+                }
+                ParseStatement(builder);
             }
-
-            builder.TryAdvance();
         }
 
         private void ParseStatement(PsiBuilder builder)
@@ -107,31 +107,41 @@ namespace JetBrains.ReSharper.Plugins.Spring
             {
                 ParseAssignStatement(builder);
             }
+            else
+            {
+                builder.Error("Expected statement");
+            }
+
+            ExpectToken(builder, SpringTokenType.Semi);
+            builder.TryAdvance();
         }
 
         private void ParseProcedureCall(PsiBuilder builder)
         {
             var start = builder.Mark();
-            var lbr = builder.TryGetToken();
+            builder.TryAdvance();
             ExpectToken(builder, SpringTokenType.LeftParenthesis);
             builder.TryAdvance();
             ParseExpr(builder);
-            ExpectToken(builder, SpringTokenType.RightParenthesis);
+            if (ExpectToken(builder, SpringTokenType.RightParenthesis, start))
+            {
+                builder.Done(start, SpringCompositeNodeType.Statement, null);
+            }
+
             builder.TryAdvance();
-            builder.Done(start, SpringCompositeNodeType.AssignmentStatement, null);
         }
 
         private void ParseAssignStatement(PsiBuilder builder)
         {
             var start = builder.Mark();
-            var varToken = builder.TryGetToken();
+            var identToken = builder.TryGetToken();
             builder.TryAdvance();
             ExpectToken(builder, SpringTokenType.Assignment);
             var assignToken = builder.TryGetToken();
             builder.TryAdvance();
             ParseExpr(builder);
-            var statement = new AssignStatementNode(new VariableNode(varToken), assignToken);
-            builder.Done(start, SpringCompositeNodeType.AssignmentStatement, statement);
+            var statement = new AssignStatementNode(new VariableNode(identToken), assignToken);
+            builder.Done(start, SpringCompositeNodeType.Statement, statement);
         }
 
         private void ParseExpr(PsiBuilder builder)
@@ -141,14 +151,6 @@ namespace JetBrains.ReSharper.Plugins.Spring
             BinOpNode left = null;
 
             var tt = GetTokenType(builder);
-            if (tt == SpringTokenType.String)
-            {
-                // var st = builder.Mark();
-                // builder.Precede();
-                // builder.Done(st, SpringLiteralType.Literal, new VariableNode(builder.TryGetToken()));
-                builder.Done(start, SpringCompositeNodeType.Expression, null);
-                return;
-            }
 
             while (tt == SpringTokenType.Plus
                    || tt == SpringTokenType.Minus)
@@ -165,8 +167,16 @@ namespace JetBrains.ReSharper.Plugins.Spring
         private void ParseTerm(PsiBuilder builder)
         {
             var start = builder.Mark();
-            ParseFactor(builder);
             var tt = GetTokenType(builder);
+            if (tt == SpringTokenType.String)
+            {
+                builder.Done(start, SpringCompositeNodeType.Expression, null);
+                builder.TryAdvance();
+                return;
+            }
+
+            ParseFactor(builder);
+            tt = GetTokenType(builder);
             BinOpNode left = null;
 
             while (tt == SpringTokenType.Multiply
@@ -193,17 +203,25 @@ namespace JetBrains.ReSharper.Plugins.Spring
             {
                 ParseBracketExpr(builder);
             }
-            else if (tt == SpringTokenType.Identifier)
+            else if (tt == SpringTokenType.Number || tt == SpringTokenType.Identifier)
+                ParseLiteral(builder);
+            else
             {
-                ParseVariable(builder);
+                builder.Error("Expected factor");
             }
         }
 
-        private void ParseVariable(PsiBuilder builder)
+        private void ParseLiteral(PsiBuilder builder)
         {
-            // var start = builder.Mark();
-            // builder.Done(start, SpringLiteralType.Literal, new VariableNode(builder.TryGetToken()));
-            builder.TryAdvance();
+            var tt = builder.GetTokenType();
+            if (tt == SpringTokenType.Number || tt == SpringTokenType.Identifier)
+            {
+                builder.TryAdvance();
+            }
+            else
+            {
+                builder.Error("Expected literal");
+            }
         }
 
         private void ParseUnaryExpr(PsiBuilder builder)
@@ -222,8 +240,8 @@ namespace JetBrains.ReSharper.Plugins.Spring
                 ParseFactor(builder);
             }
 
-            if (builder.TryAdvance())
-                builder.Done(start, SpringCompositeNodeType.UnaryOp, new UnaryOpNode(builder.TryGetToken()));
+            builder.TryAdvance();
+            builder.Done(start, SpringCompositeNodeType.UnaryOp, new UnaryOpNode(builder.TryGetToken()));
         }
 
         private void ParseBracketExpr(PsiBuilder builder)
@@ -250,23 +268,22 @@ namespace JetBrains.ReSharper.Plugins.Spring
         {
             if (builder.Eof())
             {
-                builder.Error("Unexpected end of file");
                 return false;
             }
 
             builder.AdvanceLexer();
+            while (builder.GetTokenType() == SpringTokenType.Whitespace || builder.GetTokenType() == SpringTokenType.Comment)
+            {
+                builder.AdvanceLexer();
+                if (builder.Eof())
+                    return false;
+            }
             return true;
         }
 
         public static Token TryGetToken(this PsiBuilder builder)
         {
-            if (builder.Eof())
-            {
-                builder.Error("Unexpected end of file");
-                return new Token();
-            }
-
-            return builder.GetToken();
+            return builder.Eof() ? new Token() : builder.GetToken();
         }
     }
 }

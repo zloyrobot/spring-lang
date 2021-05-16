@@ -87,7 +87,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     {
                         var comment = new StringBuilder("//");
                         Move();
-                        while (!new []{'\n', '\r', char.MinValue}.Contains(_curChar))
+                        while (!new[] {'\n', '\r', char.MinValue}.Contains(_curChar))
                         {
                             comment.Append(_curChar);
                             Move();
@@ -102,13 +102,46 @@ namespace JetBrains.ReSharper.Plugins.Spring
 
                     return;
                 case '(':
-                    CurToken = new SpringToken(SpringTokenType.LeftParenthesis, _curChar.ToString());
                     Move();
+                    if (_curChar == '*')
+                    {
+                        Move();
+                        var sb = new StringBuilder("(*");
+                        var prev = _curChar;
+                        while (_curChar != char.MinValue)
+                        {
+                            sb.Append(_curChar);
+                            if (_curChar == ')' && prev == '*')
+                                break;
+                            Move();
+                        }
+
+                        Move();
+                        CurToken = new SpringToken(SpringTokenType.Comment, sb.ToString());
+                        return;
+                    }
+
+                    CurToken = new SpringToken(SpringTokenType.LeftParenthesis, "(");
                     return;
                 case ')':
                     CurToken = new SpringToken(SpringTokenType.RightParenthesis, _curChar.ToString());
                     Move();
                     return;
+                case '{':
+                    var comSb = new StringBuilder("{");
+                    while (_curChar != char.MinValue)
+                    {
+                        comSb.Append(_curChar);
+                        if (_curChar == '}')
+                            break;
+                        Move();
+                    }
+
+                    CurToken = new SpringToken(SpringTokenType.Comment, comSb.ToString());
+
+                    Move();
+                    return;
+
                 case >= '0' and <= '9':
                 {
                     var num = string.Empty;
@@ -133,12 +166,12 @@ namespace JetBrains.ReSharper.Plugins.Spring
                         }
                         else
                         {
-                            CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, num);
+                            CurToken = new SpringToken(SpringTokenType.BadCharacter, num);
                             return;
                         }
                     }
 
-                    CurToken = new SpringToken(SpringTokenType.NUMBER, num);
+                    CurToken = new SpringToken(SpringTokenType.Number, num);
                     return;
                 }
                 case >= 'a' and <= 'z':
@@ -209,7 +242,7 @@ namespace JetBrains.ReSharper.Plugins.Spring
                     return;
             }
 
-            CurToken = new SpringToken(SpringTokenType.BAD_CHARACTER, _curChar.ToString());
+            CurToken = new SpringToken(SpringTokenType.BadCharacter, _curChar.ToString());
             Move();
         }
 

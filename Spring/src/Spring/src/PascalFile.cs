@@ -10,15 +10,9 @@ namespace JetBrains.ReSharper.Plugins.Spring
         public override PsiLanguageType Language => SpringLanguage.Instance;
     }
 
-    public class AssignmentStatement : CompositeElement
-    {
-        public override NodeType NodeType => SpringCompositeNodeType.AssignmentStatement;
-
-        public override PsiLanguageType Language => SpringLanguage.Instance;
-    }
     public class CompoundStatement : CompositeElement
     {
-        public override NodeType NodeType => SpringCompositeNodeType.CompoundStatement;
+        public override NodeType NodeType => SpringCompositeNodeType.Statement;
 
         public override PsiLanguageType Language => SpringLanguage.Instance;
     }
